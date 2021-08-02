@@ -1,2 +1,8 @@
-<title>Etusivu</title>
 <h1>Keskustelupalsta</h1>
+<hr>
+<h2>Etusivu</h2>
+{% if session.user_id %}
+<p>Olet kirjautunut sisään nimellä <b>{{ session.username }}</b>. <a href="/logout">Kirjaudu ulos</a></p>
+{% else %}
+<p>Et ole kirjautunut sisään. <a href="/login">Kirjaudu sisään</a></p>
+{% endif %}
