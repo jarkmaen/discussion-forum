@@ -1,0 +1,8 @@
+<h1>Keskustelupalsta</h1>
+<hr>
+<h2>{{ topic }}</h2>
+<ul>
+{% for post in posts %}
+<li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
+{% endfor %}
+</ul>

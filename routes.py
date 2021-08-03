@@ -1,10 +1,23 @@
 from app import app
 from flask import render_template, request, redirect
-import users
+import messages, posts, topics, users
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    list = topics.get_topics()
+    return render_template("index.html", topics=list)
+
+@app.route("/topic/<int:id>")
+def topic(id):
+    list = posts.get_posts(id)
+    topic = topics.get_topic_info(id)
+    return render_template("topic.html", posts=list, topic=topic[0])
+
+@app.route("/post/<int:id>")
+def post(id):
+    list = messages.get_messages(id)
+    post = posts.get_post_info(id)
+    return render_template("post.html", messages=list, creator=post[0], title=post[1], content=post[2])
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

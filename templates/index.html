@@ -6,3 +6,9 @@
 {% else %}
 <p>Et ole kirjautunut sisään. <a href="/login">Kirjaudu sisään</a></p>
 {% endif %}
+<p>Keskustelualueet:</p>
+<ul>
+{% for topic in topics %}
+<li><a href="/topic/{{ topic.id }}">{{ topic.name }}</a></li>
+{% endfor %}
+</ul>
