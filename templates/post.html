@@ -1,7 +1,19 @@
 <h1>Keskustelupalsta</h1>
 <hr>
-<h2>{{ title }}</h2>
-<p><b>{{ creator }}: </b> {{ content }}</p>
-{% for message in messages %}
-<p><b>{{ message.username }}:</b> {{ message.content }}</p>
+<h2>{{ post.title }}</h2>
+<p><b>{{ post.username }}: </b> {{ post.content }}</p>
+{% for comment in comments %}
+<p><b>{{ comment.username }}:</b> {{ comment.content }}</p>
 {% endfor %}
+<p><a href="/topic/{{ post.topic_id }}">Palaa takaisin</a></p>
+<hr>
+{% if session.user_id %}
+<h2>Kirjoita kommentti</h2>
+<form action="/post/{{ post.id }}" method="POST">
+    <textarea name="content" placeholder="Viesti"></textarea>
+    <p></p>
+    <input type="submit" value="Lähetä">
+</form>
+{% else %}
+<p><b>Kirjaudu sisään kommentoidaksesi</b></p>
+{% endif %}

@@ -1,8 +1,22 @@
 <h1>Keskustelupalsta</h1>
 <hr>
-<h2>{{ topic }}</h2>
+<h2>{{ topic.name }}</h2>
 <ul>
 {% for post in posts %}
 <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
 {% endfor %}
 </ul>
+<p><a href="/">Palaa takaisin</a></p>
+<hr>
+{% if session.user_id %}
+<h2>Uusi keskustelu</h2>
+<form action="/topic/{{ topic.id }}" method="POST">
+    <input type="text" name="title" placeholder="Aihe">
+    <p></p>
+    <textarea name="content" placeholder="Viesti"></textarea>
+    <p></p>
+    <input type="submit" value="Lähetä">
+</form>
+{% else %}
+<p><b>Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</b></p>
+{% endif %}
