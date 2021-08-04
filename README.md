@@ -2,12 +2,14 @@
 
 Helsingin yliopiston aineopintojen harjoitustyö. Sovellus on verkossa toimiva keskustelupalsta, jossa rekisteröityneet käyttäjät voivat keskustella erilaisista aiheista kirjoittamalla palstalle viestejä.
 
-#### Perustoimintoja:
-- Käyttäjä voi kirjautua sisään sekä ulos.
-- Käyttäjä voi rekisteröidä uuden tunnuksen.
-- Käyttäjä voi selata eri keskustelualueita sekä niiden ketjuja.
-- Käyttäjä voi kirjoittaa viestejä olemassa oleviin ketjuihin.
-- Käyttäjä voi luoda uuden ketjun tietylle keskustelualueelle.
+Sovellusta voi testata [Herokussa](https://tsoha-keskustelupalsta.herokuapp.com/).
+
+#### Perustoimintoja (*toteutetut toiminnot ovat merkattu [x]:llä*):
+- Käyttäjä voi kirjautua sisään sekä ulos **[x]**.
+- Käyttäjä voi rekisteröidä uuden tunnuksen **[x]**.
+- Käyttäjä voi selata eri keskustelualueita sekä niiden ketjuja **[x]**.
+- Käyttäjä voi kirjoittaa viestejä olemassa oleviin ketjuihin **[x]**.
+- Käyttäjä voi luoda uuden ketjun tietylle keskustelualueelle **[x]**.
 - Käyttäjä voi muokata/poistaa omia viestejä ja ketjuja.
 - Käyttäjä voi etsiä tietyn keskustelualueen ketjuja hakutoiminnolla.
 - Käyttäjä voi tarkastella omia tilastoja sekä viestihistoriaa.
