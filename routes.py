@@ -15,10 +15,14 @@ def topic(id):
     if request.method == "POST":
         title = request.form["title"]
         content = request.form["content"]
+        if len(title) < 1 or len(title) > 500:
+            return render_template("error.html", message="Otsikko puuttuu tai on liian pitkä")
+        if len(content) < 1 or len(content) > 2000:
+            return render_template("error.html", message="Viesti puuttuu tai on liian pitkä")
         if posts.add_post(id, title, content):
             return render_template("topic.html", posts=posts.get_posts(id), topic=topic)
         else:
-            return None
+            return render_template("error.html", message="Keskustelun luomisessa tapahtui virhe")
 
 @app.route("/post/<int:id>", methods=["GET", "POST"])
 def post(id):
@@ -27,10 +31,12 @@ def post(id):
         return render_template("post.html", comments=comments.get_comments(id), post=post)
     if request.method == "POST":
         content = request.form["content"]
+        if len(content) < 1 or len(content) > 2000:
+            return render_template("error.html", message="Viesti puuttuu tai on liian pitkä")
         if comments.add_comment(id, content):
             return render_template("post.html", comments=comments.get_comments(id), post=post)
         else:
-            return None
+            return render_template("error.html", message="Kommentin lähettämisessä tapahtui virhe")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -42,7 +48,7 @@ def login():
         if users.login(username, password):
             return redirect("/")
         else:
-            return None
+            return render_template("error.html", message="Väärä tunnus tai salasana")
 
 @app.route("/logout")
 def logout():
@@ -56,7 +62,11 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        if len(username) < 1 or len(username) > 16:
+            return render_template("error.html", message="Tunnuksen tulee sisältää 1-16 merkkiä")
+        if password == "":
+            return render_template("error.html", message="Salasanakenttä on tyhjä")
         if users.register(username, password):
             return redirect("/")
         else:
-            return None
+            return render_template("error.html", message="Rekisteröinnissä tapahtui virhe")
