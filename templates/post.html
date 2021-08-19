@@ -3,7 +3,17 @@
 <h2>{{ post.title }}</h2>
 <p><b>{{ post.username }}: </b> {{ post.content }}</p>
 {% for comment in comments %}
+{% if session.user_id == comment.user_id %}
+<form action="/post/delete_comment" method="POST">
+    <p>
+        <b>{{ comment.username }}:</b> {{ comment.content }}
+        <input type="submit" value="Poista kommentti">
+        <input type="hidden" name="comment_id" value="{{ comment.comment_id }}">
+    </p>
+</form>
+{% else %}
 <p><b>{{ comment.username }}:</b> {{ comment.content }}</p>
+{% endif %}
 {% endfor %}
 <p><a href="/topic/{{ post.topic_id }}">Palaa takaisin</a></p>
 <hr>
