@@ -4,10 +4,12 @@
 <p><b>{{ post.username }}: </b> {{ post.content }}</p>
 {% for comment in comments %}
 {% if session.user_id == comment.user_id %}
-<form action="/post/delete_comment" method="POST">
+<form action="/post/edit_comment" method="POST">
     <p>
-        <b>{{ comment.username }}:</b> {{ comment.content }}
-        <input type="submit" value="Poista kommentti">
+        <b>{{ comment.username }}:</b>
+        <input type="text" name="comment" value="{{ comment.content }}">
+        <input type="submit" name="update" value="Muokkaa viestiä">
+        <input type="submit" name="delete" value="Poista viesti">
         <input type="hidden" name="comment_id" value="{{ comment.comment_id }}">
     </p>
 </form>

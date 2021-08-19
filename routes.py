@@ -38,13 +38,20 @@ def post(id):
         else:
             return render_template("error.html", message="Kommentin lähettämisessä tapahtui virhe")
 
-@app.route("/post/delete_comment", methods=["POST"])
-def delete_comment():
+@app.route("/post/edit_comment", methods=["POST"])
+def edit_comment():
     comment_id = request.form["comment_id"]
-    if comments.delete_comment(comment_id):
-        return redirect(request.referrer)
-    else:
-        return render_template("error.html", message="Viestin poistamisessa tapahtui virhe")
+    if request.form.get("update"):
+        comment = request.form["comment"]
+        if comments.update_comment(comment_id, comment):
+            return redirect(request.referrer)
+        else:
+            return render_template("error.html", message="Viestin muokkauksessa tapahtui virhe")
+    elif request.form.get("delete"):
+        if comments.delete_comment(comment_id):
+            return redirect(request.referrer)
+        else:
+            return render_template("error.html", message="Viestin poistamisessa tapahtui virhe")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
