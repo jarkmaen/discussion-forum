@@ -13,6 +13,7 @@ def topic(id):
     if request.method == "GET":
         return render_template("topic.html", posts=posts.get_posts(id), topic=topic)
     if request.method == "POST":
+        users.check_csrf()
         title = request.form["title"]
         content = request.form["content"]
         if len(title) < 1 or len(title) > 500:
@@ -26,6 +27,7 @@ def topic(id):
 
 @app.route("/topic/delete_post", methods=["POST"])
 def delete_post():
+    users.check_csrf()
     post_id = request.form["post_id"]
     if posts.delete_post(post_id):
         return redirect(request.referrer)
@@ -38,6 +40,7 @@ def post(id):
     if request.method == "GET":
         return render_template("post.html", comments=comments.get_comments(id), post=post)
     if request.method == "POST":
+        users.check_csrf()
         content = request.form["content"]
         if len(content) < 1 or len(content) > 2000:
             return render_template("error.html", message="Viesti puuttuu tai on liian pitkä")
@@ -48,6 +51,7 @@ def post(id):
 
 @app.route("/post/edit_post", methods=["POST"])
 def edit_post():
+    users.check_csrf()
     post_id = request.form["post_id"]
     if request.form.get("update"):
         content = request.form["content"]
@@ -63,6 +67,7 @@ def edit_post():
 
 @app.route("/post/edit_comment", methods=["POST"])
 def edit_comment():
+    users.check_csrf()
     comment_id = request.form["comment_id"]
     if request.form.get("update"):
         comment = request.form["comment"]

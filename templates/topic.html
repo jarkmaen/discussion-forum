@@ -8,6 +8,7 @@
     <li>
         <a href="/post/{{ post.id }}">{{ post.title }}</a> <input type="submit" value="Poista keskustelu">
         <input type="hidden" name="post_id" value="{{ post.id }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </li>
 </form>
 {% else %}
@@ -25,6 +26,7 @@
     <textarea name="content" placeholder="Viesti"></textarea>
     <p></p>
     <input type="submit" value="Lähetä">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 {% else %}
 <p><b>Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</b></p>
