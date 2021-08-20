@@ -24,6 +24,14 @@ def topic(id):
         else:
             return render_template("error.html", message="Keskustelun luomisessa tapahtui virhe")
 
+@app.route("/topic/delete_post", methods=["POST"])
+def delete_post():
+    post_id = request.form["post_id"]
+    if posts.delete_post(post_id):
+        return redirect(request.referrer)
+    else:
+        return render_template("error.html", message="Keskustelun poistamisessa tapahtui virhe")
+
 @app.route("/post/<int:id>", methods=["GET", "POST"])
 def post(id):
     post = posts.get_post_info(id)
@@ -37,6 +45,21 @@ def post(id):
             return render_template("post.html", comments=comments.get_comments(id), post=post)
         else:
             return render_template("error.html", message="Kommentin lähettämisessä tapahtui virhe")
+
+@app.route("/post/edit_post", methods=["POST"])
+def edit_post():
+    post_id = request.form["post_id"]
+    if request.form.get("update"):
+        content = request.form["content"]
+        if posts.update_post(post_id, content):
+            return redirect(request.referrer)
+        else:
+            return render_template("error.html", message="Viestin muokkauksessa tapahtui virhe")
+    elif request.form.get("delete"):
+        if posts.delete_post(post_id):
+            return redirect(request.referrer)
+        else:
+            return render_template("error.html", message="Keskustelun poistamisessa tapahtui virhe")
 
 @app.route("/post/edit_comment", methods=["POST"])
 def edit_comment():

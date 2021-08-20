@@ -1,7 +1,22 @@
 <h1>Keskustelupalsta</h1>
 <hr>
+{% if post.visible == false %}
+<p>Tämä keskustelu on poistettu</p>
+<p><a href="/topic/{{ post.topic_id }}">Palaa takaisin</a></p>
+{% else %}
+{% if session.user_id == post.user_id %}
+<form action="/post/edit_post" method="POST">
+    <h2>{{ post.title }} <input type="submit" name="delete" value="Poista keskustelu"></h2>
+    <p>
+        <b>{{ post.username }}: </b><input type="text" name="content" value="{{ post.content }}"></b>
+        <input type="submit" name="update" value="Muokkaa viestiä">
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+    </p>
+</form>
+{% else %}
 <h2>{{ post.title }}</h2>
-<p><b>{{ post.username }}: </b> {{ post.content }}</p>
+<p><b>{{ post.username }}: </b>{{ post.content }}</p>
+{% endif %}
 {% for comment in comments %}
 {% if session.user_id == comment.user_id %}
 <form action="/post/edit_comment" method="POST">
@@ -28,4 +43,5 @@
 </form>
 {% else %}
 <p><b>Kirjaudu sisään kommentoidaksesi</b></p>
+{% endif %}
 {% endif %}

@@ -14,7 +14,8 @@ CREATE TABLE posts (
     topic_id INTEGER REFERENCES topics,
     user_id INTEGER REFERENCES users,
     title TEXT,
-    content TEXT
+    content TEXT,
+    visible BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE comments (
