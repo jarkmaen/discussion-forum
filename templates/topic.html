@@ -3,7 +3,7 @@
 <h2>{{ topic.name }}</h2>
 <ul>
 {% for post in posts %}
-{% if session.user_id == post.user_id %}
+{% if session.user_id == post.user_id or session.is_admin %}
 <form action="/topic/delete_post" method="POST">
     <li>
         <a href="/post/{{ post.id }}">{{ post.title }}</a> <input type="submit" value="Poista keskustelu">

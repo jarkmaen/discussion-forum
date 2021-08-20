@@ -1,34 +1,54 @@
 <h1>Keskustelupalsta</h1>
 <hr>
-{% if post.visible == false %}
+{% if not post.visible %}
 <p>Tämä keskustelu on poistettu</p>
 <p><a href="/topic/{{ post.topic_id }}">Palaa takaisin</a></p>
 {% else %}
-{% if session.user_id == post.user_id %}
+{% if session.user_id == post.user_id or session.is_admin %}
 <form action="/post/edit_post" method="POST">
     <h2>{{ post.title }} <input type="submit" name="delete" value="Poista keskustelu"></h2>
+    {% if not session.is_admin %}
     <p>
         <b>{{ post.username }}: </b><input type="text" name="content" value="{{ post.content }}"></b>
         <input type="submit" name="update" value="Muokkaa viestiä">
-        <input type="hidden" name="post_id" value="{{ post.id }}">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </p>
+    {% else %}
+    {% if session.user_id == post.user_id %}
+    <p>
+        <b>{{ post.username }}: </b><input type="text" name="content" value="{{ post.content }}"></b>
+        <input type="submit" name="update" value="Muokkaa viestiä">
+    </p>
+    {% else %}
+    <p><b>{{ post.username }}: </b>{{ post.content }}</p>
+    {% endif %}
+    {% endif %}
+    <input type="hidden" name="post_id" value="{{ post.id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 {% else %}
 <h2>{{ post.title }}</h2>
 <p><b>{{ post.username }}: </b>{{ post.content }}</p>
 {% endif %}
 {% for comment in comments %}
-{% if session.user_id == comment.user_id %}
+{% if session.user_id == comment.user_id or session.is_admin %}
 <form action="/post/edit_comment" method="POST">
     <p>
         <b>{{ comment.username }}:</b>
+        {% if session.is_admin %}
+        {% if session.user_id == comment.user_id %}
         <input type="text" name="comment" value="{{ comment.content }}">
         <input type="submit" name="update" value="Muokkaa viestiä">
+        {% else %}
+        {{ comment.content }}
+        {% endif %}
+        {% else %}
+        <input type="text" name="comment" value="{{ comment.content }}">
+        <input type="submit" name="update" value="Muokkaa viestiä">
+        {% endif %}
         <input type="submit" name="delete" value="Poista viesti">
-        <input type="hidden" name="comment_id" value="{{ comment.comment_id }}">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </p>
+    <input type="hidden" name="comment_id" value="{{ comment.comment_id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 {% else %}
 <p><b>{{ comment.username }}:</b> {{ comment.content }}</p>

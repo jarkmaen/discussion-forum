@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import os
 
 def login(username, password):
-    sql = "SELECT id, password FROM users WHERE username=:username"
+    sql = "SELECT id, password, is_admin FROM users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if not user:
@@ -13,6 +13,7 @@ def login(username, password):
         if check_password_hash(user.password, password):
             session["user_id"] = user.id
             session["username"] = username
+            session["is_admin"] = user.is_admin
             session["csrf_token"] = os.urandom(16).hex()
             return True
         else:
@@ -21,6 +22,8 @@ def login(username, password):
 def logout():
     del session["user_id"]
     del session["username"]
+    del session["is_admin"]
+    del session["csrf_token"]
 
 def register(username, password):
     hash_value = generate_password_hash(password)
@@ -34,6 +37,9 @@ def register(username, password):
 
 def user_id():
     return session.get("user_id", 0)
+
+def is_admin():
+    return session.get("is_admin", False)
 
 def check_csrf():
     if session["csrf_token"] != request.form["csrf_token"]:

@@ -37,8 +37,9 @@ def update_post(post_id, content):
 
 def delete_post(post_id):
     user_id = users.user_id()
-    if user_id == 0 or user_id != get_op(post_id)[0]:
-        return False
+    if not users.is_admin:
+        if user_id == 0 or user_id != get_op(post_id)[0]:
+            return False
     sql = "UPDATE posts SET visible=FALSE WHERE id=:post_id"
     db.session.execute(sql, {"post_id":post_id})
     db.session.commit()

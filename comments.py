@@ -32,8 +32,9 @@ def update_comment(comment_id, content):
 
 def delete_comment(comment_id):
     user_id = users.user_id()
-    if user_id == 0 or user_id != get_commenter(comment_id)[0]:
-        return False
+    if not users.is_admin:
+        if user_id == 0 or user_id != get_commenter(comment_id)[0]:
+            return False
     sql = "DELETE FROM comments WHERE id=:comment_id"
     db.session.execute(sql, {"comment_id":comment_id})
     db.session.commit()
