@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keskustelupalsta</title>
+<div class="header">
+    <h1>Keskustelupalsta</h1>
+    {% if session.user_id %}
+    <a href="/logout">Kirjaudu ulos</a>
+    <a href="#account"><b>{{ session.username }}</b></a>
+    {% else %}
+    <a href="/register">Rekisteröidy</a>
+    <a href="/login">Kirjaudu</a>
+    {% endif %}
+    <div class="header-search">
+        <form>
+            <input type="text" placeholder="Hakusana">
+            <button>Etsi</button>
+        </form>
+    </div>
+</div>
+{% block content %}{% endblock %}

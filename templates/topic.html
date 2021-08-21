@@ -1,5 +1,5 @@
-<h1>Keskustelupalsta</h1>
-<hr>
+{% extends "layout.html" %}
+{% block content %}
 {% if not topic.visible %}
 <p>Tämä keskustelualue on poistettu</p>
 <p><a href="/">Palaa takaisin</a></p>
@@ -36,3 +36,4 @@
 <p><b>Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</b></p>
 {% endif %}
 {% endif %}
+{% endblock %}

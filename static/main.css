@@ -1,0 +1,125 @@
+body {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    max-width: 70em;
+    margin: auto;
+}
+
+.header {
+    border-bottom: 1px solid #DDDDDD;
+    border-right: 1px solid #DDDDDD;
+    border-left: 1px solid #DDDDDD;
+    background-color: #ECECEC;
+    overflow: hidden;
+}
+
+.header h1 {
+    padding: 14px 14px;
+    font-size: 17px;
+    float: left;
+    margin: 0px;
+}
+
+.header a {
+    text-decoration: none;
+    padding: 14px 14px;
+    font-size: 17px;
+    color: black;
+    float: right;
+}
+
+.header a:hover {
+    background-color: #D4D4D4;
+}
+
+.header-search {
+    float: right;
+}
+
+.header-search input {
+    font-size: 17px;
+    margin-top: 8px;
+    border: none;
+    padding: 6px;
+}
+
+.header-search button {
+    background-color: #555555;
+    margin-right: 8px;
+    padding: 6px 10px;
+    font-size: 17px;
+    cursor: pointer;
+    margin-top: 8px;
+    border: none;
+    color: white;
+    float: right;
+}
+
+.topic-container {
+    margin-top: 35px;
+}
+
+.topic-container h1 {
+    font-size: 17px;
+    margin: 0px;
+}
+
+.topic-container a {
+    text-decoration: none;
+    color: black;
+}
+
+.topic-container ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.topic-container li {
+    border-bottom: 1px solid #DDDDDD;
+    border-right: 1px solid #DDDDDD;
+    border-left: 1px solid #DDDDDD;
+    position: relative;
+    padding: 8px 14px;
+}
+
+.topic-container li:hover {
+    background-color: #F5F5F5;
+}
+
+.topic-delete {
+    transform: translate(0%, -50%);
+    background-color: white;
+    position: absolute;
+    padding: 8px 14px;
+    cursor: pointer;
+    border: none;
+    right: 0%;
+    top: 50%;
+}
+
+.topic-delete:hover {
+    background-color: #D4D4D4;
+}
+
+.create-topic {
+    margin-top: 35px;
+}
+
+.create-topic input {
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    font-size: 17px;
+    padding: 8px;
+    width: 100%;
+}
+
+.create-topic button {
+    background-color: #ECECEC;
+    cursor: pointer;
+    font-size: 17px;
+    border: none;
+    padding: 8px;
+}
+
+.create-topic button:hover {
+    background-color: #D4D4D4;
+}

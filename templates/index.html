@@ -1,34 +1,28 @@
-<h1>Keskustelupalsta</h1>
-<hr>
-<h2>Etusivu</h2>
-{% if session.user_id %}
-<p>Olet kirjautunut sisään nimellä <b>{{ session.username }}</b>. <a href="/logout">Kirjaudu ulos</a></p>
-{% else %}
-<p>Et ole kirjautunut sisään. <a href="/login">Kirjaudu sisään</a></p>
-{% endif %}
-<p>Keskustelualueet:</p>
-<ul>
-{% for topic in topics %}
+{% extends "layout.html" %}
+{% block content %}
+<div class="topic-container">
+    <ul>
+        <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD;"><h1>Keskustelualueet</h1></li>
+        {% for topic in topics %}
+        {% if session.is_admin %}
+        <form action="/delete_topic" method="POST">
+            <a href="/topic/{{ topic.id }}"><li>{{ topic.name }}<input class="topic-delete" type="submit" value="Poista"></li></a>
+            <input type="hidden" name="topic_id" value="{{ topic.id }}">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        </form>
+        {% else %}
+        <a href="/topic/{{ topic.id }}"><li>{{ topic.name }}</li></a>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</div>
 {% if session.is_admin %}
-<form action="/delete_topic" method="POST">
-    <li>
-        <a href="/topic/{{ topic.id }}">{{ topic.name }}</a> <input type="submit" value="Poista keskustelualue">
-        <input type="hidden" name="topic_id" value="{{ topic.id }}">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    </li>
-</form>
-{% else %}
-<li><a href="/topic/{{ topic.id }}">{{ topic.name }}</a></li>
-{% endif %}
-{% endfor %}
-</ul>
-{% if session.is_admin %}
-<hr>
-<h2>Uusi keskustelualue</h2>
-<form action="/" method="POST">
+<form class="create-topic" action="/" method="POST">
+    <p><b>Luo uusi keskustelualue</b></p>
     <input type="text" name="topic" placeholder="Aihe">
     <p></p>
-    <input type="submit" value="Luo">
+    <button>Luo</button>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 {% endif %}
+{% endblock %}
