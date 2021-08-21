@@ -1,5 +1,9 @@
 <h1>Keskustelupalsta</h1>
 <hr>
+{% if not topic.visible %}
+<p>Tämä keskustelualue on poistettu</p>
+<p><a href="/">Palaa takaisin</a></p>
+{% else %}
 <h2>{{ topic.name }}</h2>
 <ul>
 {% for post in posts %}
@@ -30,4 +34,5 @@
 </form>
 {% else %}
 <p><b>Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</b></p>
+{% endif %}
 {% endif %}

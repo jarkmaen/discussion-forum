@@ -2,10 +2,28 @@ from app import app
 from flask import render_template, request, redirect
 import comments, posts, topics, users
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    list = topics.get_topics()
-    return render_template("index.html", topics=list)
+    if request.method == "GET":
+        return render_template("index.html", topics=topics.get_topics())
+    if request.method == "POST":
+        users.check_csrf()
+        topic = request.form["topic"]
+        if len(topic) < 1 or len(topic) > 50:
+            return render_template("error.html", message="Aihe puuttuu tai on liian pitkä")
+        if topics.add_topic(topic):
+            return render_template("index.html", topics=topics.get_topics())
+        else:
+            return render_template("error.html", message="Aiheen luomisessa tapahtui virhe")
+
+@app.route("/delete_topic", methods=["POST"])
+def delete_topic():
+    users.check_csrf()
+    topic_id = request.form["topic_id"]
+    if topics.delete_topic(topic_id):
+        return redirect(request.referrer)
+    else:
+        return render_template("error.html", message="Keskustelualueen poistamisessa tapahtui virhe")
 
 @app.route("/topic/<int:id>", methods=["GET", "POST"])
 def topic(id):

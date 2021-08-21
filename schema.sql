@@ -7,7 +7,8 @@ CREATE TABLE users (
 
 CREATE TABLE topics (
     id SERIAL PRIMARY KEY,
-    name TEXT
+    name TEXT,
+    visible BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE posts (

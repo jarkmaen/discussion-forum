@@ -14,7 +14,7 @@ def get_commenter(comment_id):
 
 def add_comment(post_id, content):
     user_id = users.user_id()
-    if users.user_id() == 0:
+    if user_id == 0:
         return False
     sql = "INSERT INTO comments (post_id, user_id, content) VALUES (:post_id, :user_id, :content)"
     db.session.execute(sql, {"post_id":post_id, "user_id":user_id, "content":content})
