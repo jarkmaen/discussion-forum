@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if not results %}
+<p>Ei hakutuloksia</p>
+{% else %}
+{% for result in results %}
+<ul>
+    <li><a href="/post/{{ result.id }}">{{ result.title }}</a></li>
+</ul>
+{% endfor %}
+{% endif %}
+<p><a href="/">Palaa etusivulle</a></p>
+{% endblock %}

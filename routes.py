@@ -99,6 +99,11 @@ def edit_comment():
         else:
             return render_template("error.html", message="Viestin poistamisessa tapahtui virhe")
 
+@app.route("/search", methods=["POST"])
+def search():
+    word = request.form["word"]
+    return render_template("search.html", results=posts.search_posts(word))
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":

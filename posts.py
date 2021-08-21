@@ -44,3 +44,8 @@ def delete_post(post_id):
     db.session.execute(sql, {"post_id":post_id})
     db.session.commit()
     return True
+
+def search_posts(word):
+    sql = "SELECT id, title FROM posts WHERE title LIKE :word AND visible=TRUE"
+    result = db.session.execute(sql, {"word":"%"+word+"%"})
+    return result.fetchall()
