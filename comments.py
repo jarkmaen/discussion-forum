@@ -12,6 +12,11 @@ def get_commenter(comment_id):
     result = db.session.execute(sql, {"comment_id":comment_id})
     return result.fetchone()
 
+def get_user_comment_count(user_id):
+    sql = "SELECT COUNT(*) FROM comments WHERE user_id=:user_id"
+    result = db.session.execute(sql, {"user_id":user_id})
+    return result.fetchone()
+
 def add_comment(post_id, content):
     user_id = users.user_id()
     if user_id == 0:

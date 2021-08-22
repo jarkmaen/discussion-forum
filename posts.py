@@ -17,6 +17,11 @@ def get_op(post_id):
     result = db.session.execute(sql, {"post_id":post_id})
     return result.fetchone()
 
+def get_user_post_count(user_id):
+    sql = "SELECT COUNT(*) FROM posts WHERE user_id=:user_id"
+    result = db.session.execute(sql, {"user_id":user_id})
+    return result.fetchone()
+
 def add_post(topic_id, title, content):
     user_id = users.user_id()
     if user_id == 0:

@@ -103,6 +103,12 @@ def edit_comment():
         else:
             return render_template("error.html", message="Viestin poistamisessa tapahtui virhe")
 
+@app.route("/profile/<int:id>")
+def profile(id):
+    post_count=posts.get_user_post_count(id)
+    message_count=comments.get_user_comment_count(id)
+    return render_template("profile.html", user_id=id, post_count=post_count[0], message_count=message_count[0])
+
 @app.route("/search", methods=["POST"])
 def search():
     word = request.form["word"]

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if not session.user_id %}
+<p style="margin-top: 35px;"><b>Kirjaudu sisään nähdäksesi tilastosi</b></p>
+<button class="button" onclick="location.href='/login'">Kirjaudu</button>
+{% elif session.user_id != user_id %}
+<p style="margin-top: 35px;"><b>Ei oikeutta nähdä sivua</b></p>
+{% else %}
+<p style="margin-top: 35px"><b>Statistiikka</b></p>
+<p>Keskusteluja luotu: {{ post_count }}</p>
+<p>Kommentteja kirjoitettu: {{ message_count }}</p>
+{% endif %}
+<p></p>
+<button class="button" onclick="location.href='/'">Palaa etusivulle</button>
+{% endblock %}

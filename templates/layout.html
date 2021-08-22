@@ -6,7 +6,7 @@
     <h1>Keskustelupalsta</h1>
     {% if session.user_id %}
     <a href="/logout">Kirjaudu ulos</a>
-    <a href="#account"><b>{{ session.username }}</b></a>
+    <a href="/profile/{{ session.user_id }}"><b>{{ session.username }}</b></a>
     {% else %}
     <a href="/register">Rekisteröidy</a>
     <a href="/login">Kirjaudu</a>
