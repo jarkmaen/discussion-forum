@@ -46,6 +46,7 @@ def delete_post(post_id):
     return True
 
 def search_posts(word):
-    sql = "SELECT id, title FROM posts WHERE title LIKE :word AND visible=TRUE"
+    sql = "SELECT id, title, (SELECT COUNT(*) FROM posts WHERE title LIKE :word AND visible=TRUE) " \
+          "AS count FROM posts WHERE title LIKE :word AND visible=TRUE"
     result = db.session.execute(sql, {"word":"%"+word+"%"})
     return result.fetchall()

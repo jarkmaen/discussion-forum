@@ -1,39 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
 {% if not topic.visible %}
-<p>Tämä keskustelualue on poistettu</p>
-<p><a href="/">Palaa takaisin</a></p>
+<p style="margin-top: 35px;"><b>Tämä keskustelualue on poistettu</b></p>
+<button class="button" onclick="location.href='/'">Palaa takaisin</button>
 {% else %}
-<h2>{{ topic.name }}</h2>
-<ul>
-{% for post in posts %}
-{% if session.user_id == post.user_id or session.is_admin %}
-<form action="/topic/delete_post" method="POST">
-    <li>
-        <a href="/post/{{ post.id }}">{{ post.title }}</a> <input type="submit" value="Poista keskustelu">
-        <input type="hidden" name="post_id" value="{{ post.id }}">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    </li>
-</form>
-{% else %}
-<p><li><a href="/post/{{ post.id }}">{{ post.title }}</a></li></p>
-{% endif %}
-{% endfor %}
-</ul>
-<p><a href="/">Palaa takaisin</a></p>
-<hr>
+<div class="list">
+    <ul>
+        <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD"><h1>{{ topic.name }}</h1></li>
+        {% for post in posts %}
+        {% if session.user_id == post.user_id or session.is_admin %}
+        <form action="/topic/delete_post" method="POST">
+            <a href="/post/{{ post.id }}"><li>{{ post.title }}<input class="delete-item" type="submit" value="Poista"></li></a>
+            <input type="hidden" name="post_id" value="{{ post.id }}">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        </form>
+        {% else %}
+        <a href="/post/{{ post.id }}"><li>{{ post.title }}</li></a>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</div>
 {% if session.user_id %}
-<h2>Uusi keskustelu</h2>
-<form action="/topic/{{ topic.id }}" method="POST">
+<form class="form" action="/topic/{{ topic.id }}" method="POST">
+    <p><b>Luo uusi keskustelu</b></p>
     <input type="text" name="title" placeholder="Aihe">
     <p></p>
-    <textarea name="content" placeholder="Viesti"></textarea>
+    <textarea class="textarea" name="content" placeholder="Viesti"></textarea>
     <p></p>
-    <input type="submit" value="Lähetä">
+    <button class="button">Luo</button>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
+<p></p>
 {% else %}
-<p><b>Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</b></p>
+<p style="margin-top: 35px;"><b>Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</b></p>
 {% endif %}
+<button class="button" onclick="location.href='/'">Palaa takaisin</button>
 {% endif %}
 {% endblock %}

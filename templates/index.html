@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="topic-container">
+<div class="list">
     <ul>
-        <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD;"><h1>Keskustelualueet</h1></li>
+        <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD"><h1>Keskustelualueet</h1></li>
         {% for topic in topics %}
         {% if session.is_admin %}
         <form action="/delete_topic" method="POST">
-            <a href="/topic/{{ topic.id }}"><li>{{ topic.name }}<input class="topic-delete" type="submit" value="Poista"></li></a>
+            <a href="/topic/{{ topic.id }}"><li>{{ topic.name }}<input class="delete-item" type="submit" value="Poista"></li></a>
             <input type="hidden" name="topic_id" value="{{ topic.id }}">
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         </form>
@@ -17,11 +17,11 @@
     </ul>
 </div>
 {% if session.is_admin %}
-<form class="create-topic" action="/" method="POST">
+<form class="form" action="/" method="POST">
     <p><b>Luo uusi keskustelualue</b></p>
     <input type="text" name="topic" placeholder="Aihe">
     <p></p>
-    <button>Luo</button>
+    <button class="button">Luo</button>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 {% endif %}

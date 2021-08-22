@@ -10,7 +10,7 @@ def index():
         users.check_csrf()
         topic = request.form["topic"]
         if len(topic) < 1 or len(topic) > 50:
-            return render_template("error.html", message="Aihe puuttuu tai on liian pitkä")
+            return render_template("error.html", message="Aihe puuttuu tai on liian pitkä (maksimissaan 50 merkkiä)")
         if topics.add_topic(topic):
             return render_template("index.html", topics=topics.get_topics())
         else:
@@ -34,10 +34,10 @@ def topic(id):
         users.check_csrf()
         title = request.form["title"]
         content = request.form["content"]
-        if len(title) < 1 or len(title) > 500:
-            return render_template("error.html", message="Otsikko puuttuu tai on liian pitkä")
+        if len(title) < 1 or len(title) > 100:
+            return render_template("error.html", message="Otsikko puuttuu tai on liian pitkä (maksimissaan 100 merkkiä)")
         if len(content) < 1 or len(content) > 2000:
-            return render_template("error.html", message="Viesti puuttuu tai on liian pitkä")
+            return render_template("error.html", message="Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)")
         if posts.add_post(id, title, content):
             return render_template("topic.html", posts=posts.get_posts(id), topic=topic)
         else:
@@ -61,7 +61,7 @@ def post(id):
         users.check_csrf()
         content = request.form["content"]
         if len(content) < 1 or len(content) > 2000:
-            return render_template("error.html", message="Viesti puuttuu tai on liian pitkä")
+            return render_template("error.html", message="Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)")
         if comments.add_comment(id, content):
             return render_template("post.html", comments=comments.get_comments(id), post=post)
         else:
@@ -73,6 +73,8 @@ def edit_post():
     post_id = request.form["post_id"]
     if request.form.get("update"):
         content = request.form["content"]
+        if len(content) < 1 or len(content) > 2000:
+            return render_template("error.html", message="Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)")
         if posts.update_post(post_id, content):
             return redirect(request.referrer)
         else:
@@ -89,6 +91,8 @@ def edit_comment():
     comment_id = request.form["comment_id"]
     if request.form.get("update"):
         comment = request.form["comment"]
+        if len(comment) < 1 or len(comment) > 2000:
+            return render_template("error.html", message="Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)")
         if comments.update_comment(comment_id, comment):
             return redirect(request.referrer)
         else:
@@ -102,7 +106,11 @@ def edit_comment():
 @app.route("/search", methods=["POST"])
 def search():
     word = request.form["word"]
-    return render_template("search.html", results=posts.search_posts(word))
+    results = posts.search_posts(word)
+    count = 0
+    if results:
+        count = results[0].count
+    return render_template("search.html", word=word, count=count, results=results)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

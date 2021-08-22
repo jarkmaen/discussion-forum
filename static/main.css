@@ -1,6 +1,6 @@
 body {
     font-family: 'Helvetica', 'Arial', sans-serif;
-    max-width: 70em;
+    max-width: 60em;
     margin: auto;
 }
 
@@ -54,26 +54,34 @@ body {
     float: right;
 }
 
-.topic-container {
+.comment {
+    border-bottom: 3px solid #DDDDDD;
+    border-right: 1px solid #DDDDDD;
+    border-left: 1px solid #DDDDDD;
+    min-height: 70px;
+    padding: 7px 14px;
+}
+
+.list {
     margin-top: 35px;
 }
 
-.topic-container h1 {
+.list h1 {
     font-size: 17px;
     margin: 0px;
 }
 
-.topic-container a {
+.list a {
     text-decoration: none;
     color: black;
 }
 
-.topic-container ul {
+.list ul {
     list-style-type: none;
     padding: 0px;
 }
 
-.topic-container li {
+.list li {
     border-bottom: 1px solid #DDDDDD;
     border-right: 1px solid #DDDDDD;
     border-left: 1px solid #DDDDDD;
@@ -81,11 +89,11 @@ body {
     padding: 8px 14px;
 }
 
-.topic-container li:hover {
+.list li:hover {
     background-color: #F5F5F5;
 }
 
-.topic-delete {
+.delete-item {
     transform: translate(0%, -50%);
     background-color: white;
     position: absolute;
@@ -96,15 +104,15 @@ body {
     top: 50%;
 }
 
-.topic-delete:hover {
+.delete-item:hover {
     background-color: #D4D4D4;
 }
 
-.create-topic {
+.form {
     margin-top: 35px;
 }
 
-.create-topic input {
+.form input {
     border: 1px solid #CCCCCC;
     box-sizing: border-box;
     font-size: 17px;
@@ -112,7 +120,30 @@ body {
     width: 100%;
 }
 
-.create-topic button {
+.textarea {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    font-size: 17px;
+    padding: 8px;
+    resize: none;
+    width: 100%;
+}
+
+.input {
+    background-color: #ECECEC;
+    padding: 2px 14px;
+    cursor: pointer;
+    font-size: 17px;
+    border: none;
+    float: right;
+}
+
+.input:hover {
+    background-color: #D4D4D4;
+}
+
+.button {
     background-color: #ECECEC;
     cursor: pointer;
     font-size: 17px;
@@ -120,6 +151,6 @@ body {
     padding: 8px;
 }
 
-.create-topic button:hover {
+.button:hover {
     background-color: #D4D4D4;
 }

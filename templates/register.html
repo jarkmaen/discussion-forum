@@ -1,16 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>Rekisteröinti</h2>
-<form action="/register" method="POST">
-    Tunnus:
-    <br>
-    <input type="text" name="username">
+<form class="form" action="/register" method="POST">
+    <p><b>Rekisteröidy</b></p>
+    <input type="text" name="username" placeholder="Tunnus">
     <p></p>
-    Salasana:
-    <br>
-    <input type="password" name="password">
+    <input type="password" name="password" placeholder="Salasana">
     <p></p>
-    <input type="submit" value="Luo tunnus">
+    <button class="button">Luo tunnus</button>
 </form>
-<p><a href="/login">Palaa takaisin</a></p>
+<p></p>
+<button class="button" onclick="location.href='/login'">Palaa takaisin</button>
 {% endblock %}

@@ -1,13 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if not results %}
-<p>Ei hakutuloksia</p>
-{% else %}
-{% for result in results %}
-<ul>
-    <li><a href="/post/{{ result.id }}">{{ result.title }}</a></li>
-</ul>
-{% endfor %}
-{% endif %}
-<p><a href="/">Palaa etusivulle</a></p>
+<div class="list">
+    <ul>
+        <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD">
+            <h1>Hakusanalla "{{ word }}" löytyi {{ count }} tulosta</h1>
+        </li>
+        {% for result in results %}
+        <a href="/post/{{ result.id }}"><li>{{ result.title }}</li></a>
+        {% endfor %}
+    </ul>
+</div>
+<button class="button" style="margin-top: 19px" onclick="location.href='/'">Palaa etusivulle</button>
 {% endblock %}
