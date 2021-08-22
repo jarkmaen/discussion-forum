@@ -35,6 +35,19 @@ def register(username, password):
         return False
     return login(username, password)
 
+def get_user_id(username):
+    sql = "SELECT id FROM users WHERE username=:username"
+    result = db.session.execute(sql, {"username":username})
+    return result.fetchone()[0]
+
+def has_private_access(topic_id):
+    sql = "SELECT id FROM private_topics WHERE topic_id=:topic_id AND user_id=:user_id"
+    result = db.session.execute(sql, {"topic_id":topic_id, "user_id":user_id()})
+    if result.fetchone():
+        return True
+    else:
+        return False
+
 def user_id():
     return session.get("user_id", 0)
 

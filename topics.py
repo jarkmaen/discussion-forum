@@ -2,20 +2,35 @@ from db import db
 import users
 
 def get_topics():
-    sql = "SELECT id, name FROM topics WHERE visible=TRUE"
+    sql = "SELECT id, name FROM topics WHERE visible=TRUE AND private=FALSE"
     result = db.session.execute(sql)
     return result.fetchall()
 
+def get_private_topics():
+    sql = "SELECT T.id, T.name FROM topics T INNER JOIN private_topics P " \
+          "ON T.id=P.topic_id WHERE T.visible=TRUE AND T.private=TRUE AND P.user_id=:user_id"
+    result = db.session.execute(sql, {"user_id":users.user_id()})
+    return result.fetchall()
+
 def get_topic_info(topic_id):
-    sql = "SELECT id, name, visible FROM topics WHERE id=:topic_id"
+    sql = "SELECT id, name, visible, private FROM topics WHERE id=:topic_id"
     result = db.session.execute(sql, {"topic_id":topic_id})
     return result.fetchone()
 
-def add_topic(topic):
+def add_topic(topic, private):
     if not users.is_admin:
         return False
-    sql = "INSERT INTO topics (name) VALUES (:topic)"
-    db.session.execute(sql, {"topic":topic})
+    sql = "INSERT INTO topics (name, private) VALUES (:topic, :private) RETURNING id"
+    result = db.session.execute(sql, {"topic":topic, "private":private})
+    db.session.commit()
+    if private:
+        if not add_user(result.fetchone()[0], users.user_id()):
+            return False
+    return True
+
+def add_user(topic_id, user_id):
+    sql = "INSERT INTO private_topics (topic_id, user_id) VALUES (:topic_id, :user_id)"
+    db.session.execute(sql, {"topic_id":topic_id, "user_id":user_id})
     db.session.commit()
     return True
 

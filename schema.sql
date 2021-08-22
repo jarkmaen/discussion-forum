@@ -8,6 +8,7 @@ CREATE TABLE users (
 CREATE TABLE topics (
     id SERIAL PRIMARY KEY,
     name TEXT,
+    private BOOLEAN DEFAULT FALSE,
     visible BOOLEAN DEFAULT TRUE
 );
 
@@ -25,4 +26,10 @@ CREATE TABLE comments (
     post_id INTEGER REFERENCES posts,
     user_id INTEGER REFERENCES users,
     content TEXT
+);
+
+CREATE TABLE private_topics (
+    id SERIAL PRIMARY KEY,
+    topic_id INTEGER REFERENCES topics,
+    user_id INTEGER REFERENCES users
 );

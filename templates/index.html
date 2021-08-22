@@ -16,11 +16,22 @@
         {% endfor %}
     </ul>
 </div>
+{% if private_topics %}
+<div class="list">
+    <ul>
+        <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD"><h1>Yksityiset keskustelualueet</h1></li>
+        {% for private_topic in private_topics %}
+        <a href="/topic/{{ private_topic.id }}"><li>{{ private_topic.name }}</li></a>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 {% if session.is_admin %}
 <form class="form" action="/" method="POST">
     <p><b>Luo uusi keskustelualue</b></p>
     <input type="text" name="topic" placeholder="Aihe">
-    <p></p>
+    <p><input type="radio" name="private" value="f" checked><label>Julkinen</label></p>
+    <p><input type="radio" name="private" value="t"><label>Yksityinen</label></p>
     <button class="button">Luo</button>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>

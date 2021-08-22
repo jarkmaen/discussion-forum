@@ -55,7 +55,7 @@ body {
 }
 
 .comment {
-    border-bottom: 3px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
     border-right: 1px solid #DDDDDD;
     border-left: 1px solid #DDDDDD;
     min-height: 70px;
@@ -112,7 +112,7 @@ body {
     margin-top: 35px;
 }
 
-.form input {
+.form input[type=text], input[type=password] {
     border: 1px solid #CCCCCC;
     box-sizing: border-box;
     font-size: 17px;

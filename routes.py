@@ -5,14 +5,15 @@ import comments, posts, topics, users
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("index.html", topics=topics.get_topics())
+        return render_template("index.html", topics=topics.get_topics(), private_topics=topics.get_private_topics())
     if request.method == "POST":
         users.check_csrf()
         topic = request.form["topic"]
+        private = request.form["private"]
         if len(topic) < 1 or len(topic) > 50:
             return render_template("error.html", message="Aihe puuttuu tai on liian pitkä (maksimissaan 50 merkkiä)")
-        if topics.add_topic(topic):
-            return render_template("index.html", topics=topics.get_topics())
+        if topics.add_topic(topic, private):
+            return render_template("index.html", topics=topics.get_topics(), private_topics=topics.get_private_topics())
         else:
             return render_template("error.html", message="Aiheen luomisessa tapahtui virhe")
 
@@ -28,8 +29,11 @@ def delete_topic():
 @app.route("/topic/<int:id>", methods=["GET", "POST"])
 def topic(id):
     topic = topics.get_topic_info(id)
+    has_access = False
+    if topic.private and users.has_private_access(id):
+        has_access = True
     if request.method == "GET":
-        return render_template("topic.html", posts=posts.get_posts(id), topic=topic)
+        return render_template("topic.html", posts=posts.get_posts(id), topic=topic, has_access=has_access)
     if request.method == "POST":
         users.check_csrf()
         title = request.form["title"]
@@ -39,7 +43,7 @@ def topic(id):
         if len(content) < 1 or len(content) > 2000:
             return render_template("error.html", message="Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)")
         if posts.add_post(id, title, content):
-            return render_template("topic.html", posts=posts.get_posts(id), topic=topic)
+            return render_template("topic.html", posts=posts.get_posts(id), topic=topic, has_access=has_access)
         else:
             return render_template("error.html", message="Keskustelun luomisessa tapahtui virhe")
 
@@ -51,6 +55,16 @@ def delete_post():
         return redirect(request.referrer)
     else:
         return render_template("error.html", message="Keskustelun poistamisessa tapahtui virhe")
+
+@app.route("/topic/add_member", methods=["POST"])
+def add_member():
+    users.check_csrf()
+    username = request.form["username"]
+    topic_id = request.form["topic_id"]
+    if topics.add_user(topic_id, users.get_user_id(username)):
+        return redirect(request.referrer)
+    else:
+        return render_template("error.html", message="Jäsenen lisäämisessä tapahtui virhe")
 
 @app.route("/post/<int:id>", methods=["GET", "POST"])
 def post(id):
