@@ -17,6 +17,12 @@ def get_user_comment_count(user_id):
     result = db.session.execute(sql, {"user_id":user_id})
     return result.fetchone()
 
+def get_user_comment_history(user_id):
+    sql = "SELECT C.post_id, P.title, C.content FROM comments C " \
+          "INNER JOIN posts P ON C.post_id=P.id WHERE C.user_id=:user_id AND P.visible=TRUE"
+    result = db.session.execute(sql, {"user_id":user_id})
+    return result.fetchall()
+
 def add_comment(post_id, content):
     user_id = users.user_id()
     if user_id == 0:

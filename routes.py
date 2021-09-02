@@ -119,9 +119,10 @@ def edit_comment():
 
 @app.route("/profile/<int:id>")
 def profile(id):
-    post_count=posts.get_user_post_count(id)
-    message_count=comments.get_user_comment_count(id)
-    return render_template("profile.html", user_id=id, post_count=post_count[0], message_count=message_count[0])
+    post_count = posts.get_user_post_count(id)
+    comment_count = comments.get_user_comment_count(id)
+    user_comments = comments.get_user_comment_history(id)
+    return render_template("profile.html", user_id=id, post_count=post_count[0], comment_count=comment_count[0], user_comments=user_comments)
 
 @app.route("/search", methods=["POST"])
 def search():
