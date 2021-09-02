@@ -1,5 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
+{% if error %}
+<div class="alert">
+    <span class="alert-button" onclick="this.parentElement.style.display='none';">&times;</span>
+    <strong>{{ error }}</strong>
+</div>
+{% endif %}
 {% if topic.private and not has_access %}
 <p style="margin-top: 35px;"><b>Ei oikeutta nähdä sivua</b></p>
 {% else %}
@@ -53,4 +59,5 @@
 {% endif %}
 {% endif %}
 <button class="button" onclick="location.href='/'">Palaa takaisin</button>
+<p></p>
 {% endblock %}

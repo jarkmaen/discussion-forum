@@ -58,8 +58,9 @@ body {
     border-bottom: 1px solid #DDDDDD;
     border-right: 1px solid #DDDDDD;
     border-left: 1px solid #DDDDDD;
-    min-height: 70px;
+    word-wrap: break-word;
     padding: 7px 14px;
+    min-height: 70px;
 }
 
 .list {
@@ -154,4 +155,25 @@ body {
 
 .button:hover {
     background-color: #D4D4D4;
+}
+
+.alert {
+    background-color: #E74C3C;
+    margin-top: 35px;
+    padding: 20px;
+    color: white;
+}
+
+.alert-button {
+    font-weight: bold;
+    line-height: 20px;
+    margin-left: 15px;
+    cursor: pointer;
+    font-size: 22px;
+    float: right;
+    color: white;
+}
+
+.alert-button:hover {
+    color: black;
 }

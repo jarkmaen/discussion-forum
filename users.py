@@ -38,7 +38,11 @@ def register(username, password):
 def get_user_id(username):
     sql = "SELECT id FROM users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
-    return result.fetchone()[0]
+    user_id = result.fetchone()
+    if user_id is None:
+        return 0
+    else:
+        return user_id[0]
 
 def has_private_access(topic_id):
     sql = "SELECT id FROM private_topics WHERE topic_id=:topic_id AND user_id=:user_id"
