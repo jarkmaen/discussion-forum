@@ -18,4 +18,10 @@
         </form>
     </div>
 </div>
+{% if error %}
+<div class="alert">
+    <span class="alert-button" onclick="this.parentElement.style.display='none';">&times;</span>
+    <strong>VIRHE:</strong> {{ error }}
+</div>
+{% endif %}
 {% block content %}{% endblock %}

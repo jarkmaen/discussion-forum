@@ -1,11 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if error %}
-<div class="alert">
-    <span class="alert-button" onclick="this.parentElement.style.display='none';">&times;</span>
-    <strong>VIRHE:</strong> {{ error }}
-</div>
-{% endif %}
 <div class="list">
     <ul>
         <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD"><h1>Keskustelualueet</h1></li>
