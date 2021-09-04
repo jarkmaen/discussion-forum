@@ -7,8 +7,9 @@ def get_posts(topic_id):
     return result.fetchall()
 
 def get_post_info(post_id):
-    sql = "SELECT P.id, P.topic_id, P.user_id, U.username, P.title, P.content, P.visible FROM posts P " \
-          "INNER JOIN users U ON P.user_id=U.id WHERE P.id=:post_id"
+    sql = "SELECT P.id, P.topic_id, P.user_id, U.username, P.title, P.content, T.private, P.visible FROM posts P " \
+          "INNER JOIN users U ON P.user_id=U.id INNER JOIN topics T ON P.topic_id=T.id " \
+          "WHERE P.id=:post_id"
     result = db.session.execute(sql, {"post_id":post_id})
     return result.fetchone()
 
@@ -51,7 +52,7 @@ def delete_post(post_id):
     return True
 
 def search_posts(word):
-    sql = "SELECT id, title, (SELECT COUNT(*) FROM posts WHERE title ILIKE :word AND visible=TRUE) " \
-          "AS count FROM posts WHERE title ILIKE :word AND visible=TRUE"
+    sql = "SELECT P.id, P.title, T.private FROM posts P INNER JOIN topics T ON P.topic_id=T.id " \
+          "WHERE P.title ILIKE :word AND T.private=FALSE AND P.visible=TRUE;"
     result = db.session.execute(sql, {"word":"%"+word+"%"})
     return result.fetchall()

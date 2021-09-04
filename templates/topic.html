@@ -28,19 +28,6 @@
         {% endfor %}
     </ul>
 </div>
-{% if topic.private %}
-{% if session.is_admin %}
-<form class="form" action="/topic/add_member" method="POST">
-    <p><b>Lisää uusi jäsen</b></p>
-    <input type="text" name="username" placeholder="Käyttäjänimi">
-    <p></p>
-    <button class="button">Lisää</button>
-    <p></p>
-    <input type="hidden" name="topic_id" value="{{ topic.id }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
-{% endif %}
-{% else %}
 {% if session.user_id %}
 <form class="form" action="/topic/{{ topic.id }}" method="POST">
     <p><b>Luo uusi keskustelu</b></p>
@@ -55,6 +42,16 @@
 {% else %}
 <p style="margin-top: 35px;"><b>Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</b></p>
 {% endif %}
+{% if topic.private and session.is_admin %}
+<form class="form" action="/topic/add_member" method="POST">
+    <p><b>Lisää uusi jäsen</b></p>
+    <input type="text" name="username" placeholder="Käyttäjänimi">
+    <p></p>
+    <button class="button">Lisää</button>
+    <p></p>
+    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
 {% endif %}
 {% endif %}
 {% endif %}

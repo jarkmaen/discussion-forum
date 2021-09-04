@@ -7,7 +7,7 @@ def get_topics():
     return result.fetchall()
 
 def get_private_topics():
-    sql = "SELECT T.id, T.name FROM topics T INNER JOIN private_topics P " \
+    sql = "SELECT DISTINCT T.id, T.name FROM topics T INNER JOIN private_topics P " \
           "ON T.id=P.topic_id WHERE T.visible=TRUE AND T.private=TRUE AND P.user_id=:user_id"
     result = db.session.execute(sql, {"user_id":users.user_id()})
     return result.fetchall()

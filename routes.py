@@ -85,19 +85,22 @@ def add_member():
 def post(id):
     comments_list = comments.get_comments(id)
     post = posts.get_post_info(id)
+    has_access = False
+    if post.private and users.has_private_access(post.topic_id):
+        has_access = True
     if request.method == "GET":
-        return render_template("post.html", comments=comments.get_comments(id), post=post)
+        return render_template("post.html", comments=comments.get_comments(id), post=post, has_access=has_access)
     if request.method == "POST":
         users.check_csrf()
         content = request.form["content"]
         if len(content) < 1 or len(content) > 2000:
             error = "Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)"
-            return render_template("post.html", comments=comments_list, post=post, error=error)
+            return render_template("post.html", comments=comments_list, post=post, has_access=has_access, error=error)
         if comments.add_comment(id, content):
-            return render_template("post.html", comments=comments.get_comments(id), post=posts.get_post_info(id))
+            return render_template("post.html", comments=comments.get_comments(id), post=posts.get_post_info(id), has_access=has_access)
         else:
             error = "Kommentin lähettämisessä tapahtui virhe"
-            return render_template("post.html", comments=comments_list, post=post, error=error)
+            return render_template("post.html", comments=comments_list, post=post, has_access=has_access, error=error)
 
 @app.route("/post/edit_post", methods=["POST"])
 def edit_post():
@@ -157,10 +160,7 @@ def profile(id):
 def search():
     word = request.form["word"]
     results = posts.search_posts(word)
-    count = 0
-    if results:
-        count = results[0].count
-    return render_template("search.html", word=word, count=count, results=results)
+    return render_template("search.html", word=word, count=len(results), results=results)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

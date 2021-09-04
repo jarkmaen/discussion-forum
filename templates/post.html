@@ -6,9 +6,11 @@
     <strong>{{ error }}</strong>
 </div>
 {% endif %}
+{% if post.private and not has_access %}
+<p style="margin-top: 35px;"><b>Ei oikeutta nähdä sivua</b></p>
+{% else %}
 {% if not post.visible %}
 <p style="margin-top: 35px;"><b>Tämä keskustelu on poistettu</b></p>
-<button class="button" onclick="location.href='/topic/{{ post.topic_id }}'">Palaa takaisin</button>
 {% else %}
 <form action="/post/edit_post" method="POST">
     <div class="header" style="border-top: 1px solid #DDDDDD; margin-top: 35px">
@@ -75,7 +77,8 @@
 {% else %}
 <p style="margin-top: 35px;"><b>Kirjaudu sisään kommentoidaksesi</b></p>
 {% endif %}
+{% endif %}
+{% endif %}
 <button class="button" onclick="location.href='/topic/{{ post.topic_id }}'">Palaa takaisin</button>
 <p></p>
-{% endif %}
 {% endblock %}
