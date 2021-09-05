@@ -7,19 +7,19 @@ def index():
     topics_list = topics.get_topics()
     private_topics = topics.get_private_topics()
     if request.method == "GET":
-        return render_template("index.html", topics=topics_list, private_topics=private_topics)
+        return render_template("index.html", topics=topics_list, p_topics=private_topics)
     if request.method == "POST":
         users.check_csrf()
-        topic = request.form["topic"]
+        name = request.form["name"]
         private = request.form["private"]
-        if len(topic) < 1 or len(topic) > 50:
+        if len(name) < 1 or len(name) > 50:
             error = "Aihe puuttuu tai on liian pitkä (maksimissaan 50 merkkiä)"
-            return render_template("index.html", topics=topics_list, private_topics=private_topics, error=error)
-        if topics.add_topic(topic, private):
-            return render_template("index.html", topics=topics.get_topics(), private_topics=topics.get_private_topics())
+            return render_template("index.html", topics=topics_list, p_topics=private_topics, error=error)
+        if topics.add_topic(name, private):
+            return render_template("index.html", topics=topics.get_topics(), p_topics=topics.get_private_topics())
         else:
             error = "Aiheen luomisessa tapahtui virhe"
-            return render_template("index.html", topics=topics_list, private_topics=private_topics, error=error)
+            return render_template("index.html", topics=topics_list, p_topics=private_topics, error=error)
 
 @app.route("/delete_topic", methods=["POST"])
 def delete_topic():
@@ -28,17 +28,16 @@ def delete_topic():
     if topics.delete_topic(topic_id):
         return redirect(request.referrer)
     else:
-        return render_template("error.html", message="Keskustelualueen poistamisessa tapahtui virhe")
+        error = "Keskustelualueen poistamisessa tapahtui virhe"
+        return render_template("index.html", topics=topics.get_topics(), p_topics=topics.get_private_topics(), error=error)
 
 @app.route("/topic/<int:id>", methods=["GET", "POST"])
 def topic(id):
     posts_list = posts.get_posts(id)
     topic = topics.get_topic_info(id)
-    has_access = False
-    if topic.private and users.has_private_access(id):
-        has_access = True
+    has_access = users.has_private_access(id)
     if request.method == "GET":
-        return render_template("topic.html", posts=posts.get_posts(id), topic=topic, has_access=has_access)
+        return render_template("topic.html", posts=posts_list, topic=topic, has_access=has_access)
     if request.method == "POST":
         users.check_csrf()
         title = request.form["title"]
@@ -58,11 +57,15 @@ def topic(id):
 @app.route("/topic/delete_post", methods=["POST"])
 def delete_post():
     users.check_csrf()
-    post_id = request.form["post_id"]
-    if posts.delete_post(post_id):
+    if posts.delete_post(request.form["post_id"]):
         return redirect(request.referrer)
     else:
-        return render_template("error.html", message="Keskustelun poistamisessa tapahtui virhe")
+        topic_id = request.form["topic_id"]
+        posts_list = posts.get_posts(topic_id)
+        topic = topics.get_topic_info(topic_id)
+        has_access = users.has_private_access(topic_id)
+        error = "Keskustelun poistamisessa tapahtui virhe"
+        return render_template("topic.html", posts=posts_list, topic=topic, has_access=has_access, error=error)
 
 @app.route("/topic/add_member", methods=["POST"])
 def add_member():
@@ -72,24 +75,21 @@ def add_member():
     user_id = users.get_user_id(username)
     posts_list = posts.get_posts(topic_id)
     topic = topics.get_topic_info(topic_id)
+    error = ""
     if user_id == 0:
         error = "Käyttäjää ei löytynyt (huom. tunnukset ovat merkkikokoriippuvaisia)"
         return render_template("topic.html", posts=posts_list, topic=topic, has_access=True, error=error)
-    if topics.add_user(topic_id, user_id):
-        return render_template("topic.html", posts=posts.get_posts(topic_id), topic=topics.get_topic_info(topic_id), has_access=True)
     else:
-        error = "Jäsenen lisäämisessä tapahtui virhe"
-        return render_template("topic.html", posts=posts_list, topic=topic, has_access=True, error=error)
+        topics.add_user(topic_id, user_id)
+    return render_template("topic.html", posts=posts_list, topic=topic, has_access=True, error=error)
 
 @app.route("/post/<int:id>", methods=["GET", "POST"])
 def post(id):
     comments_list = comments.get_comments(id)
     post = posts.get_post_info(id)
-    has_access = False
-    if post.private and users.has_private_access(post.topic_id):
-        has_access = True
+    has_access = users.has_private_access(post.topic_id)
     if request.method == "GET":
-        return render_template("post.html", comments=comments.get_comments(id), post=post, has_access=has_access)
+        return render_template("post.html", comments=comments_list, post=post, has_access=has_access)
     if request.method == "POST":
         users.check_csrf()
         content = request.form["content"]
@@ -108,22 +108,23 @@ def edit_post():
     post_id = request.form["post_id"]
     comments_list = comments.get_comments(post_id)
     post = posts.get_post_info(post_id)
+    has_access = users.has_private_access(post.topic_id)
     if request.form.get("update"):
         content = request.form["content"]
         if len(content) < 1 or len(content) > 2000:
             error = "Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)"
-            return render_template("post.html", comments=comments_list, post=post, error=error)
+            return render_template("post.html", comments=comments_list, post=post, has_access=has_access, error=error)
         if posts.update_post(post_id, content):
-            return render_template("post.html", comments=comments.get_comments(post_id), post=posts.get_post_info(post_id))
+            return render_template("post.html", comments=comments.get_comments(post_id), post=posts.get_post_info(post_id), has_access=has_access)
         else:
             error = "Viestin muokkauksessa tapahtui virhe"
-            return render_template("post.html", comments=comments_list, post=post, error=error)
+            return render_template("post.html", comments=comments_list, post=post, has_access=has_access, error=error)
     elif request.form.get("delete"):
         if posts.delete_post(post_id):
-            return render_template("post.html", comments=comments.get_comments(post_id), post=posts.get_post_info(post_id))
+            return render_template("post.html", comments=comments.get_comments(post_id), post=posts.get_post_info(post_id), has_access=has_access)
         else:
             error = "Keskustelun poistamisessa tapahtui virhe"
-            return render_template("post.html", comments=comments_list, post=post, error=error)
+            return render_template("post.html", comments=comments_list, post=post, has_access=has_access, error=error)
 
 @app.route("/post/edit_comment", methods=["POST"])
 def edit_comment():
@@ -132,22 +133,23 @@ def edit_comment():
     comment_id = request.form["comment_id"]
     comments_list = comments.get_comments(post_id)
     post = posts.get_post_info(post_id)
+    has_access = users.has_private_access(post.topic_id)
     if request.form.get("update"):
         comment = request.form["comment"]
         if len(comment) < 1 or len(comment) > 2000:
             error = "Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)"
-            return render_template("post.html", comments=comments_list, post=post, error=error)
+            return render_template("post.html", comments=comments_list, post=post, has_access=has_access, error=error)
         if comments.update_comment(comment_id, comment):
-            return render_template("post.html", comments=comments.get_comments(post_id), post=posts.get_post_info(post_id))
+            return render_template("post.html", comments=comments.get_comments(post_id), post=posts.get_post_info(post_id), has_access=has_access)
         else:
             error = "Viestin muokkauksessa tapahtui virhe"
-            return render_template("post.html", comments=comments_list, post=post, error=error)
+            return render_template("post.html", comments=comments_list, post=post, has_access=has_access, error=error)
     elif request.form.get("delete"):
         if comments.delete_comment(comment_id):
-            return render_template("post.html", comments=comments.get_comments(post_id), post=posts.get_post_info(post_id))
+            return render_template("post.html", comments=comments.get_comments(post_id), post=posts.get_post_info(post_id), has_access=has_access)
         else:
             error = "Viestin poistamisessa tapahtui virhe"
-            return render_template("post.html", comments=comments_list, post=post, error=error)
+            return render_template("post.html", comments=comments_list, post=post, error=error, has_access=has_access)
 
 @app.route("/profile/<int:id>")
 def profile(id):

@@ -16,19 +16,19 @@
         {% endfor %}
     </ul>
 </div>
-{% if private_topics %}
+{% if p_topics %}
 <div class="list">
     <ul>
         <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD"><h1>Yksityiset keskustelualueet</h1></li>
-        {% for private_topic in private_topics %}
+        {% for p_topic in p_topics %}
         {% if session.is_admin %}
         <form action="/delete_topic" method="POST">
-            <a href="/topic/{{ private_topic.id }}"><li>{{ private_topic.name }}<input class="delete-item" type="submit" value="Poista"></li></a>
-            <input type="hidden" name="topic_id" value="{{ private_topic.id }}">
+            <a href="/topic/{{ p_topic.id }}"><li>{{ p_topic.name }}<input class="delete-item" type="submit" value="Poista"></li></a>
+            <input type="hidden" name="topic_id" value="{{ p_topic.id }}">
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         </form>
         {% else %}
-        <a href="/topic/{{ private_topic.id }}"><li>{{ private_topic.name }}</li></a>
+        <a href="/topic/{{ p_topic.id }}"><li>{{ p_topic.name }}</li></a>
         {% endif %}
         {% endfor %}
     </ul>
@@ -37,7 +37,7 @@
 {% if session.is_admin %}
 <form class="form" action="/" method="POST">
     <p><b>Luo uusi keskustelualue</b></p>
-    <input type="text" name="topic" placeholder="Aihe">
+    <input type="text" name="name" placeholder="Aihe">
     <p><input type="radio" name="private" value="f" checked><label>Julkinen</label></p>
     <p><input type="radio" name="private" value="t"><label>Yksityinen</label></p>
     <button class="button">Luo</button>

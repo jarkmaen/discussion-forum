@@ -5,8 +5,7 @@ import os
 
 def login(username, password):
     sql = "SELECT id, password, is_admin FROM users WHERE username=:username"
-    result = db.session.execute(sql, {"username":username})
-    user = result.fetchone()
+    user = db.session.execute(sql, {"username": username}).fetchone()
     if not user:
         return False
     else:
@@ -29,7 +28,7 @@ def register(username, password):
     hash_value = generate_password_hash(password)
     try:
         sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
-        db.session.execute(sql, {"username":username, "password":hash_value})
+        db.session.execute(sql, {"username": username, "password": hash_value})
         db.session.commit()
     except:
         return False
@@ -37,8 +36,7 @@ def register(username, password):
 
 def get_user_id(username):
     sql = "SELECT id FROM users WHERE username=:username"
-    result = db.session.execute(sql, {"username":username})
-    user_id = result.fetchone()
+    user_id = db.session.execute(sql, {"username": username}).fetchone()
     if user_id is None:
         return 0
     else:
@@ -46,8 +44,7 @@ def get_user_id(username):
 
 def has_private_access(topic_id):
     sql = "SELECT id FROM private_topics WHERE topic_id=:topic_id AND user_id=:user_id"
-    result = db.session.execute(sql, {"topic_id":topic_id, "user_id":user_id()})
-    if result.fetchone():
+    if db.session.execute(sql, {"topic_id": topic_id, "user_id": user_id()}).fetchone():
         return True
     else:
         return False
