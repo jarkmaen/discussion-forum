@@ -14,10 +14,10 @@ Salasana: `admin`
 - Käyttäjä voi selata eri keskustelualueita sekä niiden ketjuja **[x]**.
 - Käyttäjä voi kirjoittaa viestejä olemassa oleviin ketjuihin **[x]**.
 - Käyttäjä voi luoda uuden ketjun keskustelualueelle **[x]**.
-- Käyttäjä voi luoda uuden ketjun yksityiselle keskustelualueella.
+- Käyttäjä voi luoda uuden ketjun yksityiselle keskustelualueella **[x]**.
 - Käyttäjä voi muokata/poistaa omia viestejä ja ketjuja **[x]**.
 - Käyttäjä voi etsiä viestiketjuja hakutoiminnolla **[x]**.
-- Käyttäjä voi tarkastella omia tilastoja sekä viestihistoriaa.
+- Käyttäjä voi tarkastella omia tilastoja sekä viestihistoriaa **[x]**.
   - Tilastoissa näkyy kuinka monta viestiä on lähettänyt sekä kuinka monta ketjua on luonut **[x]**.
 - Ylläpitäjä voi lisätä sekä poistaa keskustelualueita **[x]**.
 - Ylläpitäjä voi poistaa muiden käyttäjien viestejä ja ketjuja **[x]**.
