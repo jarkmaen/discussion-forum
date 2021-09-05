@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Keskustelupalsta</title>
 <div class="header">
-    <h1>Keskustelupalsta</h1>
+    <a href="/" style="float:left;"><b>Keskustelupalsta</b></a>
     {% if session.user_id %}
     <a href="/logout">Kirjaudu ulos</a>
     <a href="/profile/{{ session.user_id }}"><b>{{ session.username }}</b></a>
