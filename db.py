@@ -1,9 +1,6 @@
 from app import app
 from flask_sqlalchemy import SQLAlchemy
-from os import getenv
 
-uri = getenv("DATABASE_URL")
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
-app.config["SQLALCHEMY_DATABASE_URI"] = uri
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///local.db"
+
 db = SQLAlchemy(app)
