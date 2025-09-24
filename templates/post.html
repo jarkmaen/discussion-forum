@@ -1,78 +1,68 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if post.private and not has_access %}
-<p style="margin-top: 35px;"><b>Ei oikeutta nähdä sivua</b></p>
+{% if not access and post.private %}
+<p class="notice">Ei oikeutta nähdä sivua</p>
 {% else %}
 {% if not post.visible %}
-<p style="margin-top: 35px;"><b>Tämä keskustelu on poistettu</b></p>
+<p class="notice">Tämä keskustelu on poistettu</p>
 {% else %}
 <form action="/post/edit_post" method="POST">
-    <div class="header" style="border-top: 1px solid #DDDDDD; margin-top: 35px">
+    <div class="post-header">
         <h1>{{ post.title }}</h1>
-        {% if session.user_id == post.user_id or session.is_admin %}
-        <input class="input" style="padding: 14px 14px" type="submit" name="delete" value="Poista keskustelu">
+        {% if post.user_id == session.user_id or session.is_admin %}
+        <input class="post-input" name="delete" type="submit" value="Poista keskustelu">
         {% endif %}
     </div>
-    <p></p>
-    <div style="border-top: 1px solid #DDDDDD">
-        <div class="header">
-            <h1 style="padding: 2px 14px">{{ post.username }}</h1>
-            {% if session.user_id == post.user_id %}
-            <input class="input" type="submit" name="update" value="Muokkaa viestiä">
-            {% endif %}
-        </div>
-        <div class="comment">
-            {% if session.user_id == post.user_id %}
-            <textarea class="textarea" name="content">{{ post.content }}</textarea>
-            {% else %}
-            <p>{{ post.content }}</p>
-            {% endif %}
-        </div>
+    <div class="comment-header">
+        <h1>{{ post.username }}</h1>
+        {% if post.user_id == session.user_id %}
+        <input class="post-input" name="update" type="submit" value="Muokkaa viestiä">
+        {% endif %}
     </div>
-    <input type="hidden" name="post_id" value="{{ post.id }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <div class="comment">
+        {% if post.user_id == session.user_id %}
+        <textarea class="comment-box" name="content">{{ post.content }}</textarea>
+        {% else %}
+        <p>{{ post.content }}</p>
+        {% endif %}
+    </div>
+    <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
+    <input name="post_id" type="hidden" value="{{ post.id }}">
 </form>
-<p></p>
 {% for comment in comments %}
 <form action="/post/edit_comment" method="POST">
-    <div style="border-top: 1px solid #DDDDDD">
-        <div class="header">
-            <h1 style="padding: 2px 14px">{{ comment.username }}</h1>
-            {% if session.user_id == comment.user_id or session.is_admin %}
-            <input class="input" type="submit" name="delete" value="Poista viesti">
-            {% endif %}
-            {% if session.user_id == comment.user_id %}
-            <input class="input" type="submit" name="update" value="Muokkaa viestiä">
-            {% endif %}
-        </div>
-        <div class="comment">
-            {% if session.user_id == comment.user_id %}
-            <textarea class="textarea" name="comment">{{ comment.content }}</textarea>
-            {% else %}
-            <p>{{ comment.content }}</p>
-            {% endif %}
-        </div>
+    <div class="comment-header">
+        <h1>{{ comment.username }}</h1>
+        {% if comment.user_id == session.user_id or session.is_admin %}
+        <input class="post-input" name="delete" type="submit" value="Poista viesti">
+        {% endif %}
+        {% if comment.user_id == session.user_id %}
+        <input class="post-input" name="update" type="submit" value="Muokkaa viestiä">
+        {% endif %}
     </div>
-    <input type="hidden" name="post_id" value="{{ post.id }}">
-    <input type="hidden" name="comment_id" value="{{ comment.comment_id }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <div class="comment">
+        {% if comment.user_id == session.user_id %}
+        <textarea class="comment-box" name="content">{{ comment.content }}</textarea>
+        {% else %}
+        <p>{{ comment.content }}</p>
+        {% endif %}
+    </div>
+    <input name="comment_id" type="hidden" value="{{ comment.comment_id }}">
+    <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
+    <input name="post_id" type="hidden" value="{{ post.id }}">
 </form>
-<p></p>
 {% endfor %}
 {% if session.user_id %}
-<form class="form" action="/post/{{ post.id }}" method="POST">
+<form action="/post/{{ post.id }}" class="form" method="POST">
     <p><b>Kirjoita kommentti</b></p>
-    <textarea class="textarea" name="content" placeholder="Viesti"></textarea>
-    <p></p>
+    <textarea class="comment-box" name="content" placeholder="Viesti"></textarea>
     <button class="button">Lähetä</button>
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
 </form>
-<p></p>
 {% else %}
-<p style="margin-top: 35px;"><b>Kirjaudu sisään kommentoidaksesi</b></p>
+<p class="notice">Kirjaudu sisään kommentoidaksesi</p>
 {% endif %}
 {% endif %}
 {% endif %}
 <button class="button" onclick="location.href='/topic/{{ post.topic_id }}'">Palaa takaisin</button>
-<p></p>
 {% endblock %}

@@ -1,24 +1,28 @@
 {% extends "layout.html" %}
 {% block content %}
 {% if not session.user_id %}
-<p style="margin-top: 35px;"><b>Kirjaudu sisään nähdäksesi profiilisi sisällön</b></p>
-<button class="button" onclick="location.href='/login'">Kirjaudu</button>
+<div>
+    <p class="notice">Kirjaudu sisään nähdäksesi profiilisi sisällön</p>
+    <button class="button" onclick="location.href='/login'">Kirjaudu</button>
+</div>
 {% elif session.user_id != user_id %}
-<p style="margin-top: 35px;"><b>Ei oikeutta nähdä sivua</b></p>
+<p class="notice">Ei oikeutta nähdä sivua</p>
 {% else %}
-<p style="margin-top: 35px"><b>Statistiikka</b></p>
-<p>Keskusteluja luotu: {{ post_count }}</p>
-<p>Kommentteja kirjoitettu: {{ comment_count }}</p>
+<p class="notice">Statistiikka</p>
+<p>Keskusteluja luotu: {{ posts_count }}</p>
+<p>Kommentteja kirjoitettu: {{ comments_count }}</p>
 <div class="list">
     <ul>
-        <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD"><h1>Viestihistoria</h1></li>
+        <li class="list-header">
+            <h1>Viestihistoria</h1>
+        </li>
         {% for comment in user_comments %}
-        <a href="/post/{{ comment.post_id }}"><li><b>{{ comment.title }} ></b> {{ comment.content }}</li></a>
+        <a href="/post/{{ comment.post_id }}">
+            <li><b>{{ comment.title }} > </b>{{ comment.content }}</li>
+        </a>
         {% endfor %}
     </ul>
 </div>
 {% endif %}
-<p></p>
-<button class="button" onclick="location.href='/'">Palaa etusivulle</button>
-<p></p>
+<button class="button" onclick="location.href='/'" style="margin-top: 35px">Palaa etusivulle</button>
 {% endblock %}

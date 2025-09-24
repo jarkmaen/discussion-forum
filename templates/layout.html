@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="/static/main.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="/static/main.css" rel="stylesheet">
 <title>Keskustelupalsta</title>
 <div class="header">
-    <a href="/" style="float:left;"><b>Keskustelupalsta</b></a>
+    <a href="/" style="float: left"><b>Keskustelupalsta</b></a>
     {% if session.user_id %}
     <a href="/logout">Kirjaudu ulos</a>
     <a href="/profile/{{ session.user_id }}"><b>{{ session.username }}</b></a>
@@ -13,14 +13,14 @@
     {% endif %}
     <div class="header-search">
         <form action="/search", method="POST">
-            <input type="text" name="word" placeholder="Hakusana">
+            <input name="keyword" placeholder="Hakusana" type="text">
             <button>Etsi</button>
         </form>
     </div>
 </div>
 {% if error %}
 <div class="alert">
-    <span class="alert-button" onclick="this.parentElement.style.display='none';">&times;</span>
+    <span class="alert-button" onclick="this.parentElement.style.display='none'">&times;</span>
     <strong>VIRHE:</strong> {{ error }}
 </div>
 {% endif %}

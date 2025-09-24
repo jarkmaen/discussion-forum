@@ -2,14 +2,16 @@
 {% block content %}
 <div class="list">
     <ul>
-        <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD">
-            <h1>Hakusanalla "{{ word }}" löytyi {{ count }} tulosta</h1>
+        <li class="list-header">
+            <h1>Hakusanalla "{{ keyword }}" löytyi {{ count }} tulosta</h1>
         </li>
         {% for result in results %}
-        <a href="/post/{{ result.id }}"><li>{{ result.title }}</li></a>
+        <a href="/post/{{ result.id }}">
+            <li>{{ result.title }}</li>
+        </a>
         {% endfor %}
     </ul>
 </div>
-<button class="button" style="margin-top: 19px" onclick="location.href='/'">Palaa etusivulle</button>
+<button class="button" style="margin-top: 35px" onclick="location.href='/'">Palaa etusivulle</button>
 <p></p>
 {% endblock %}

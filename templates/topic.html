@@ -1,24 +1,30 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if topic.private and not has_access %}
-<p style="margin-top: 35px;"><b>Ei oikeutta nähdä sivua</b></p>
+{% if not access and topic.private %}
+<p class="notice">Ei oikeutta nähdä sivua</p>
 {% else %}
 {% if not topic.visible %}
-<p style="margin-top: 35px;"><b>Tämä keskustelualue on poistettu</b></p>
+<p class="notice">Tämä keskustelualue on poistettu</p>
 {% else %}
 <div class="list">
     <ul>
-        <li style="background-color: #ECECEC; border-top: 1px solid #DDDDDD"><h1>{{ topic.name }}</h1></li>
+        <li class="list-header">
+            <h1>{{ topic.title }}</h1>
+        </li>
         {% for post in posts %}
-        {% if session.user_id == post.user_id or session.is_admin %}
+        {% if post.user_id == session.user_id or session.is_admin %}
         <form action="/topic/delete_post" method="POST">
-            <a href="/post/{{ post.id }}"><li>{{ post.title }}<input class="delete-item" type="submit" value="Poista"></li></a>
-            <input type="hidden" name="topic_id" value="{{ topic.id }}">
-            <input type="hidden" name="post_id" value="{{ post.id }}">
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <a href="/post/{{ post.id }}">
+                <li>{{ post.title }}<input class="delete-item" type="submit" value="Poista"></li>
+            </a>
+            <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
+            <input name="post_id" type="hidden" value="{{ post.id }}">
+            <input name="topic_id" type="hidden" value="{{ topic.id }}">
         </form>
         {% else %}
-        <a href="/post/{{ post.id }}"><li>{{ post.title }}</li></a>
+        <a href="/post/{{ post.id }}">
+            <li>{{ post.title }}</li>
+        </a>
         {% endif %}
         {% endfor %}
     </ul>
@@ -26,30 +32,24 @@
 {% if session.user_id %}
 <form class="form" action="/topic/{{ topic.id }}" method="POST">
     <p><b>Luo uusi keskustelu</b></p>
-    <input type="text" name="title" placeholder="Aihe">
-    <p></p>
-    <textarea class="textarea" name="content" placeholder="Viesti"></textarea>
-    <p></p>
+    <input name="title" placeholder="Aihe" type="text">
+    <textarea class="comment-box" name="content" placeholder="Viesti" style="margin-top: 20px"></textarea>
     <button class="button">Luo</button>
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
 </form>
-<p></p>
 {% else %}
-<p style="margin-top: 35px;"><b>Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</b></p>
+<p class="notice">Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</p>
 {% endif %}
-{% if topic.private and session.is_admin %}
-<form class="form" action="/topic/add_member" method="POST">
+{% if session.is_admin and topic.private %}
+<form class="form" action="/topic/add_user" method="POST">
     <p><b>Lisää uusi jäsen</b></p>
     <input type="text" name="username" placeholder="Käyttäjänimi">
-    <p></p>
     <button class="button">Lisää</button>
-    <p></p>
-    <input type="hidden" name="topic_id" value="{{ topic.id }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
+    <input name="topic_id" type="hidden" value="{{ topic.id }}">
 </form>
 {% endif %}
 {% endif %}
 {% endif %}
 <button class="button" onclick="location.href='/'">Palaa takaisin</button>
-<p></p>
 {% endblock %}
