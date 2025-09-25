@@ -2,12 +2,12 @@
 {% block content %}
 <div>
     <form action="/login" class="form" method="POST">
-        <p><b>Kirjaudu sisään</b></p>
-        <input name="username" placeholder="Tunnus" type="text">
-        <input name="password" placeholder="Salasana" type="password">
-        <button class="button">Kirjaudu</button>
+        <p><b>Log in</b></p>
+        <input name="username" placeholder="Username" type="text">
+        <input name="password" placeholder="Password" type="password">
+        <button class="button">Log in</button>
     </form>
-    <button class="button" onclick="location.href='/register'">Rekisteröidy</button>
+    <button class="button" onclick="location.href='/register'">Register</button>
 </div>
-<button class="button" onclick="location.href='/'">Palaa takaisin</button>
+<button class="button" onclick="location.href='/'">Go back</button>
 {% endblock %}

@@ -3,7 +3,7 @@
 <div class="list">
     <ul>
         <li class="list-header">
-            <h1>Hakusanalla "{{ keyword }}" löytyi {{ count }} tulosta</h1>
+            <h1>{{ count }} result{{ "s" if count != 1 else "" }} found for "{{ keyword }}"</h1>
         </li>
         {% for result in results %}
         <a href="/post/{{ result.id }}">
@@ -12,6 +12,6 @@
         {% endfor %}
     </ul>
 </div>
-<button class="button" style="margin-top: 35px" onclick="location.href='/'">Palaa etusivulle</button>
+<button class="button" style="margin-top: 35px" onclick="location.href='/'">Back to front page</button>
 <p></p>
 {% endblock %}

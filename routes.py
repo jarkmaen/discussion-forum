@@ -19,11 +19,11 @@ def index():
         title = request.form["title"]
 
         if len(title) < 1 or len(title) > 50:
-            error = "Aihe puuttuu tai on liian pitkä (maksimissaan 50 merkkiä)"
+            error = "Title is missing or too long (maximum 50 characters)"
         elif topics.add_topic(private == "true", title):
             return render_template("index.html", private_topics=topics.get_private_topics(), topics=topics.get_topics())
         else:
-            error = "Aiheen luomisessa tapahtui virhe"
+            error = "An error occurred while creating the topic"
 
         return render_template("index.html", error=error, private_topics=private_topics_list, topics=topics_list)
 
@@ -37,7 +37,7 @@ def delete_topic():
     if topics.delete_topic(topic_id):
         return redirect(request.referrer)
     else:
-        error = "Keskustelualueen poistamisessa tapahtui virhe"
+        error = "An error occurred while deleting the discussion forum"
         return render_template(
             "index.html", error=error, private_topics=topics.get_private_topics(), topics=topics.get_topics()
         )
@@ -55,7 +55,7 @@ def login():
         if users.login(password, username):
             return redirect("/")
         else:
-            return render_template("login.html", error="Väärä tunnus tai salasana")
+            return render_template("login.html", error="Incorrect username or password")
 
 
 @app.route("/logout")
@@ -80,13 +80,13 @@ def post(post_id):
         content = request.form["content"]
 
         if len(content) < 1 or len(content) > 2000:
-            error = "Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)"
+            error = "Message is missing or too long (maximum 2000 characters)"
         elif comments.add_comment(content, post_id):
             return render_template(
                 "post.html", access=access, comments=comments.get_comments(post_id), post=posts.get_post(post_id)
             )
         else:
-            error = "Kommentin lähettämisessä tapahtui virhe"
+            error = "An error occurred while sending the comment"
 
     return render_template("post.html", access=access, comments=comments_list, error=error, post=post)
 
@@ -107,20 +107,20 @@ def edit_comment():
         content = request.form["content"]
 
         if len(content) < 1 or len(content) > 2000:
-            error = "Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)"
+            error = "Message is missing or too long (maximum 2000 characters)"
         elif comments.update_comment(comment_id, content):
             return render_template(
                 "post.html", access=access, comments=comments.get_comments(post_id), post=posts.get_post(post_id)
             )
         else:
-            error = "Viestin muokkauksessa tapahtui virhe"
+            error = "An error occurred while editing the message"
     elif request.form.get("delete"):
         if comments.delete_comment(comment_id):
             return render_template(
                 "post.html", access=access, comments=comments.get_comments(post_id), post=posts.get_post(post_id)
             )
         else:
-            error = "Viestin poistamisessa tapahtui virhe"
+            error = "An error occurred while deleting the message"
 
     return render_template("post.html", access=access, comments=comments_list, error=error, post=post)
 
@@ -140,20 +140,20 @@ def edit_post():
         content = request.form["content"]
 
         if len(content) < 1 or len(content) > 2000:
-            error = "Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)"
+            error = "Message is missing or too long (maximum 2000 characters)"
         elif posts.update_post(content, post_id):
             return render_template(
                 "post.html", access=access, comments=comments.get_comments(post_id), post=posts.get_post(post_id)
             )
         else:
-            error = "Viestin muokkauksessa tapahtui virhe"
+            error = "An error occurred while editing the message"
     elif request.form.get("delete"):
         if posts.delete_post(post_id):
             return render_template(
                 "post.html", access=access, comments=comments.get_comments(post_id), post=posts.get_post(post_id)
             )
         else:
-            error = "Keskustelun poistamisessa tapahtui virhe"
+            error = "An error occurred while deleting the discussion"
 
     return render_template("post.html", access=access, comments=comments_list, error=error, post=post)
 
@@ -183,11 +183,11 @@ def register():
     username = request.form["username"]
 
     if len(username) < 1 or len(username) > 16:
-        error = "Tunnuksen tulee sisältää 1-16 merkkiä"
+        error = "Username must be 1-16 characters long"
     elif password == "":
-        error = "Salasanakenttä on tyhjä"
+        error = "Password field cannot be empty"
     elif not users.register(password, username):
-        error = "Rekisteröinnissä tapahtui virhe"
+        error = "An error occurred during registration"
 
     if error:
         return render_template("register.html", error=error)
@@ -219,15 +219,15 @@ def topic(topic_id):
         title = request.form["title"]
 
         if len(title) < 1 or len(title) > 100:
-            error = "Otsikko puuttuu tai on liian pitkä (maksimissaan 100 merkkiä)"
+            error = "Title is missing or too long (maximum 100 characters)"
         elif len(content) < 1 or len(content) > 2000:
-            error = "Viesti puuttuu tai on liian pitkä (maksimissaan 2000 merkkiä)"
+            error = "Message is missing or too long (maximum 2000 characters)"
         elif posts.add_post(content, title, topic_id):
             return render_template(
                 "topic.html", access=access, posts=posts.get_posts(topic_id), topic=topics.get_topic(topic_id)
             )
         else:
-            error = "Keskustelun luomisessa tapahtui virhe"
+            error = "An error occurred while creating the discussion"
 
         return render_template("topic.html", access=access, error=error, posts=posts_list, topic=topic)
 
@@ -246,7 +246,7 @@ def add_user():
     topic = topics.get_topic(topic_id)
 
     if user_id == 0:
-        error = "Käyttäjää ei löytynyt (huom. tunnukset ovat merkkikokoriippuvaisia)"
+        error = "User not found (note: usernames are case sensitive)"
     else:
         topics.add_user_to_private_topic(topic_id, user_id)
 
@@ -261,7 +261,7 @@ def delete_post():
         return redirect(request.referrer)
     else:
         access = users.has_private_access(topic_id)
-        error = "Keskustelun poistamisessa tapahtui virhe"
+        error = "An error occurred while deleting the discussion"
         posts_list = posts.get_posts(topic_id)
 
         topic_id = request.form["topic_id"]

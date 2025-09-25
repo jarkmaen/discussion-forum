@@ -3,7 +3,7 @@
 <div class="list">
     <ul>
         <li class="list-header">
-            <h1>Keskustelualueet</h1>
+            <h1>Topic</h1>
         </li>
         {% for topic in topics %}
         {% if session.is_admin %}
@@ -26,7 +26,7 @@
 <div class="list">
     <ul>
         <li class="list-header">
-            <h1>Yksityiset keskustelualueet</h1>
+            <h1>Private topics</h1>
         </li>
         {% for private_topic in private_topics %}
         {% if session.is_admin %}
@@ -48,11 +48,11 @@
 {% endif %}
 {% if session.is_admin %}
 <form action="/" class="form" method="POST">
-    <p><b>Luo uusi keskustelualue</b></p>
-    <input name="title" placeholder="Aihe" type="text">
-    <p><input name="private" checked type="radio" value="false"><label>Julkinen</label></p>
-    <p><input name="private" type="radio" value="true"><label>Yksityinen</label></p>
-    <button class="button" style="margin-top: 0px">Luo</button>
+    <p><b>Create a new topic</b></p>
+    <input name="title" placeholder="Title" type="text">
+    <p><input name="private" checked type="radio" value="false"><label>Public</label></p>
+    <p><input name="private" type="radio" value="true"><label>Private</label></p>
+    <button class="button" style="margin-top: 0px">Create</button>
     <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
 </form>
 <p></p>

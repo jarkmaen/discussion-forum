@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="/static/main.css" rel="stylesheet">
-<title>Keskustelupalsta</title>
+<title>Discussion Forum</title>
 <div class="header">
-    <a href="/" style="float: left"><b>Keskustelupalsta</b></a>
+    <a href="/" style="float: left"><b>Discussion Forum</b></a>
     {% if session.user_id %}
-    <a href="/logout">Kirjaudu ulos</a>
+    <a href="/logout">Log out</a>
     <a href="/profile/{{ session.user_id }}"><b>{{ session.username }}</b></a>
     {% else %}
-    <a href="/register">Rekisteröidy</a>
-    <a href="/login">Kirjaudu</a>
+    <a href="/register">Register</a>
+    <a href="/login">Log in</a>
     {% endif %}
     <div class="header-search">
         <form action="/search" method="POST">
-            <input name="keyword" placeholder="Etsi" type="text">
+            <input name="keyword" placeholder="Search" type="text">
             <button>
                 <svg height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="11" cy="11" fill="none" r="8" stroke-width="2" stroke="currentColor" />
@@ -26,7 +26,7 @@
 {% if error %}
 <div class="alert">
     <span class="alert-button" onclick="this.parentElement.style.display='none'">&times;</span>
-    <strong>VIRHE:</strong> {{ error }}
+    <strong>ERROR:</strong> {{ error }}
 </div>
 {% endif %}
 {% block content %}{% endblock %}

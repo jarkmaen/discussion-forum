@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
 {% if not access and topic.private %}
-<p class="notice">Ei oikeutta nähdä sivua</p>
+<p class="notice">You do not have permission to view this private forum.</p>
 {% else %}
 {% if not topic.visible %}
-<p class="notice">Tämä keskustelualue on poistettu</p>
+<p class="notice">This discussion forum has been removed.</p>
 {% else %}
 <div class="list">
     <ul>
@@ -15,7 +15,7 @@
         {% if post.user_id == session.user_id or session.is_admin %}
         <form action="/topic/delete_post" method="POST">
             <a href="/post/{{ post.id }}">
-                <li>{{ post.title }}<input class="delete-item" type="submit" value="Poista"></li>
+                <li>{{ post.title }}<input class="delete-item" type="submit" value="Delete"></li>
             </a>
             <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
             <input name="post_id" type="hidden" value="{{ post.id }}">
@@ -31,25 +31,25 @@
 </div>
 {% if session.user_id %}
 <form class="form" action="/topic/{{ topic.id }}" method="POST">
-    <p><b>Luo uusi keskustelu</b></p>
-    <input name="title" placeholder="Aihe" type="text">
-    <textarea class="comment-box" name="content" placeholder="Viesti" style="margin-top: 20px"></textarea>
-    <button class="button">Luo</button>
+    <p><b>Create a new discussion</b></p>
+    <input name="title" placeholder="Title" type="text">
+    <textarea class="comment-box" name="content" placeholder="Message" style="margin-top: 20px"></textarea>
+    <button class="button">Create</button>
     <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
 </form>
 {% else %}
-<p class="notice">Sinun täytyy olla kirjautunut sisään luodaksesi uuden keskustelun</p>
+<p class="notice">You must be logged in to create a new discussion.</p>
 {% endif %}
 {% if session.is_admin and topic.private %}
 <form class="form" action="/topic/add_user" method="POST">
-    <p><b>Lisää uusi jäsen</b></p>
-    <input type="text" name="username" placeholder="Käyttäjänimi">
-    <button class="button">Lisää</button>
+    <p><b>Add a new user</b></p>
+    <input type="text" name="username" placeholder="Username">
+    <button class="button">Add</button>
     <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
     <input name="topic_id" type="hidden" value="{{ topic.id }}">
 </form>
 {% endif %}
 {% endif %}
 {% endif %}
-<button class="button" onclick="location.href='/'">Palaa takaisin</button>
+<button class="button" onclick="location.href='/'">Back to front page</button>
 {% endblock %}

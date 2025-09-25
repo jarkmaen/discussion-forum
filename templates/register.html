@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
 <form action="/register" class="form" method="POST">
-    <p><b>Rekisteröidy</b></p>
-    <input name="username" placeholder="Tunnus" type="text">
-    <input name="password" placeholder="Salasana" type="password">
-    <button class="button">Luo tunnus</button>
+    <p><b>Register</b></p>
+    <input name="username" placeholder="Username" type="text">
+    <input name="password" placeholder="Password" type="password">
+    <button class="button">Create account</button>
 </form>
-<button class="button" onclick="location.href='/login'">Palaa takaisin</button>
+<button class="button" onclick="location.href='/login'">Go back</button>
 {% endblock %}
