@@ -135,10 +135,13 @@
     color: white;
     cursor: pointer;
     float: right;
-    font-size: 17px;
     margin-right: 8px;
     margin-top: 8px;
-    padding: 6px 10px;
+    padding: 7px 10px;
+}
+
+.header-search button svg {
+    display: block;
 }
 
 .header-search input {
