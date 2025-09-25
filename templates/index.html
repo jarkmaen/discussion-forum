@@ -9,7 +9,7 @@
         {% if session.is_admin %}
         <form action="/delete_topic" method="POST">
             <a href="/topic/{{ topic.id }}">
-                <li>{{ topic.title }}<input class="delete-item" type="submit" value="Poista"></li>
+                <li>{{ topic.title }}<input class="delete-item" type="submit" value="Delete"></li>
             </a>
             <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
             <input name="topic_id" type="hidden" value="{{ topic.id }}">
@@ -32,7 +32,7 @@
         {% if session.is_admin %}
         <form action="/delete_topic" method="POST">
             <a href="/topic/{{ private_topic.id }}">
-                <li>{{ private_topic.title }}<input class="delete-item" type="submit" value="Poista"></li>
+                <li>{{ private_topic.title }}<input class="delete-item" type="submit" value="Delete"></li>
             </a>
             <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
             <input name="topic_id" type="hidden" value="{{ private_topic.id }}">
