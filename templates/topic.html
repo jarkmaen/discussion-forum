@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
 {% if not access and topic.private %}
-<p class="notice">You do not have permission to view this private forum.</p>
+<p class="notice">You do not have permission to view this private topic.</p>
 {% else %}
 {% if not topic.visible %}
-<p class="notice">This discussion forum has been removed.</p>
+<p class="notice">This topic has been removed.</p>
 {% else %}
 <div class="list">
     <ul>
@@ -31,14 +31,14 @@
 </div>
 {% if session.user_id %}
 <form class="form" action="/topic/{{ topic.id }}" method="POST">
-    <p><b>Create a new discussion</b></p>
+    <p><b>Create a new post</b></p>
     <input name="title" placeholder="Title" type="text">
     <textarea class="comment-box" name="content" placeholder="Message" style="margin-top: 20px"></textarea>
     <button class="button">Create</button>
     <input name="csrf_token" type="hidden" value="{{ session.csrf_token }}">
 </form>
 {% else %}
-<p class="notice">You must be logged in to create a new discussion.</p>
+<p class="notice">You must be logged in to create a new post.</p>
 {% endif %}
 {% if session.is_admin and topic.private %}
 <form class="form" action="/topic/add_user" method="POST">

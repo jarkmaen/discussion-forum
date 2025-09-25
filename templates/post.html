@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
 {% if not access and post.private %}
-<p class="notice">You do not have permission to view this private discussion.</p>
+<p class="notice">You do not have permission to view this private post.</p>
 {% else %}
 {% if not post.visible %}
-<p class="notice">This discussion has been removed.</p>
+<p class="notice">This post has been removed.</p>
 {% else %}
 <form action="/post/edit_post" method="POST">
     <div class="post-header">
         <h1>{{ post.title }}</h1>
         {% if post.user_id == session.user_id or session.is_admin %}
-        <input class="post-input" name="delete" type="submit" value="Delete discussion">
+        <input class="post-input" name="delete" type="submit" value="Delete post">
         {% endif %}
     </div>
     <div class="comment-header">

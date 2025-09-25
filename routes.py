@@ -37,7 +37,7 @@ def delete_topic():
     if topics.delete_topic(topic_id):
         return redirect(request.referrer)
     else:
-        error = "An error occurred while deleting the discussion forum"
+        error = "An error occurred while deleting the topic"
         return render_template(
             "index.html", error=error, private_topics=topics.get_private_topics(), topics=topics.get_topics()
         )
@@ -153,7 +153,7 @@ def edit_post():
                 "post.html", access=access, comments=comments.get_comments(post_id), post=posts.get_post(post_id)
             )
         else:
-            error = "An error occurred while deleting the discussion"
+            error = "An error occurred while deleting the post"
 
     return render_template("post.html", access=access, comments=comments_list, error=error, post=post)
 
@@ -227,7 +227,7 @@ def topic(topic_id):
                 "topic.html", access=access, posts=posts.get_posts(topic_id), topic=topics.get_topic(topic_id)
             )
         else:
-            error = "An error occurred while creating the discussion"
+            error = "An error occurred while creating the post"
 
         return render_template("topic.html", access=access, error=error, posts=posts_list, topic=topic)
 
@@ -261,7 +261,7 @@ def delete_post():
         return redirect(request.referrer)
     else:
         access = users.has_private_access(topic_id)
-        error = "An error occurred while deleting the discussion"
+        error = "An error occurred while deleting the post"
         posts_list = posts.get_posts(topic_id)
 
         topic_id = request.form["topic_id"]
