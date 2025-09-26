@@ -23,6 +23,12 @@ $ git clone https://github.com/jarkmaen/discussion-forum.git
 # Go into the project directory
 $ cd discussion-forum
 
+# Create a virtual environment
+$ python -m venv venv
+
+# Activate the virtual environment
+$ source venv/bin/activate
+
 # Install dependencies
 $ pip install -r requirements.txt
 
